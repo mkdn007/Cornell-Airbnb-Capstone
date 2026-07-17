@@ -1,4 +1,4 @@
-# Model Iterations — NYC Airbnb Capstone (Manas Modeling)
+# Model Iterations — NYC Airbnb Capstone 
 
 How the pricing model evolved from the original OLS baseline into the final Ridge + KNN diagnostic. Read the linked docs in the order below for the full story.
 
