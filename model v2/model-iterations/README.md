@@ -1,5 +1,8 @@
 # Model Iterations — NYC Airbnb Capstone 
 
+**Recommended reading order:** [1. Testing](testing_models/TESTING_MODELS.md) → [2. Ridge](ridge-model/RIDGE_RESIDUAL_PRODUCT.md) → [3. KNN](knn-layer/KNN_COMPARABLES.md)
+
+
 How the pricing model evolved from the original OLS baseline into the final Ridge + KNN diagnostic. Read the linked docs in the order below for the full story.
 
 ---
@@ -22,4 +25,3 @@ The bake-off proved short-stay and monthly rentals price on genuinely different 
 
 ---
 
-**Recommended reading order:** [1. Testing](testing_models/TESTING_MODELS.md) → [2. Ridge](ridge-model/RIDGE_RESIDUAL_PRODUCT.md) → [3. KNN](knn-layer/KNN_COMPARABLES.md)
