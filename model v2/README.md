@@ -1,4 +1,4 @@
-# Model Iterations — NYC Airbnb Capstone (Manas Modeling)
+# Model Iterations — NYC Airbnb Capstone 
 
 
 **Recommended reading order:** [1. Testing](testing_models/TESTING_MODELS.md) → [2. Ridge](ridge-model/RIDGE_RESIDUAL_PRODUCT.md) → [3. KNN](knn-layer/KNN_COMPARABLES.md)
