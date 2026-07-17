@@ -42,7 +42,7 @@ The current modeling work (**Model v2**) refined the baseline into a production 
 |----------|----------------|
 | [Data Cleaning Process](Data%20Cleaning%20Process.md) | Full cleaning + feature-engineering pipeline: active-listing filter, imputation, amenity parsing, host tiers, calendar occupancy, BERT sentiment, and the complete column dictionary |
 | [Model v2 — Model Iterations](model%20v2/model-iterations/README.md) | How the model evolved from OLS → Ridge → KNN → segment split, with links to the testing, pricing, and benchmarking sub-docs |
-| [Capstone Presentation](https://1drv.ms/p/c/f8ae865111d402f7/IQDEBYREy05pSo0NkkGYIBVBAcsa5nQCOXdlw9JKNpdyrlA?e=UWj3oa) | Slide deck covering the business case, EDA findings, and modeling approach |
+| [Capstone Presentation](Model%20Definition%20%26%20Initial%20Results%20%28FINAL%29.pdf) | Slide deck (PDF) covering the business case, EDA findings, and modeling approach — also viewable [online](https://1drv.ms/p/c/f8ae865111d402f7/IQDEBYREy05pSo0NkkGYIBVBAcsa5nQCOXdlw9JKNpdyrlA?e=UWj3oa) |
 | `Capstone Project Visualizations.twb` | Tableau workbook with the EDA and results visualizations |
 
 ---
