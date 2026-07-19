@@ -45,6 +45,7 @@ The current modeling work (**Model v2**) refined the baseline into a production 
 | [Model v2 — Model Iterations](model%20v2/model-iterations/README.md) | How the model evolved from OLS → Ridge → KNN → segment split, with links to the testing, pricing, and benchmarking sub-docs |
 | [Capstone Presentation](Model%20Definition%20%26%20Initial%20Results%20%28FINAL%29.pdf) | Slide deck (PDF) covering the business case, EDA findings, and modeling approach — also viewable [online](https://1drv.ms/p/c/f8ae865111d402f7/IQDEBYREy05pSo0NkkGYIBVBAcsa5nQCOXdlw9JKNpdyrlA?e=UWj3oa) |
 | `Capstone Project Visualizations.twb` | Tableau workbook with the EDA and results visualizations |
+| [Team Status Dashboard](https://claude.ai/code/artifact/b3c6574e-a7fc-44fb-a11b-e05adbea1433) | Live agile-style board: what's frozen for the check-in, the three exploratory branches, and open decisions ahead of the Wed 7/22 go/no-go |
 
 ---
 
