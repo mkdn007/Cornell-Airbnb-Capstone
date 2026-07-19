@@ -15,6 +15,11 @@ date that shows available today and blocked tomorrow be inferred as a
 real booking event, the same mechanism AirDNA and academic Airbnb-pricing
 research use.
 
+After each run, copies calendar_snapshots.db into the git repo and pushes
+it, so the accumulating data is visible to the team without anyone
+needing to run this locally. Best-effort: a git/network failure is
+logged, not raised, so it never breaks the scrape itself.
+
 ToS note: this scrapes Airbnb's public site, which sits outside their
 Terms of Service, discussed at length before building this. Kept to a
 200-listing sample with jittered delays between requests, not a
@@ -25,6 +30,7 @@ import json
 import sqlite3
 import time
 import random
+import subprocess
 import urllib.request
 import urllib.parse
 import urllib.error
@@ -155,6 +161,46 @@ def run():
 
     print(f"{ok} listings scraped OK, {failed} failed. See {LOG_PATH}")
     conn.close()
+
+    push_db_to_repo(today)
+
+
+REPO_SCRAPER_DIR = Path(r"C:\Users\stava\OneDrive\Documents\Capstone\repo_clone\scraper-poc")
+
+
+def push_db_to_repo(today):
+    """Copy today's database into the git repo and push it. Best-effort:
+    logs failures instead of raising, so a git/network issue never breaks
+    the scrape itself, only the push step."""
+    import shutil
+    log_lines = []
+    try:
+        repo_root = REPO_SCRAPER_DIR.parent
+        dest = REPO_SCRAPER_DIR / DB_PATH.name
+        shutil.copy2(DB_PATH, dest)
+
+        def git(*args):
+            return subprocess.run(
+                ["git", *args], cwd=repo_root, capture_output=True, text=True, check=False
+            )
+
+        git("add", str(dest.relative_to(repo_root)))
+        status = git("status", "--porcelain")
+        if not status.stdout.strip():
+            log_lines.append(f"git push {today.isoformat()}: no changes to commit")
+        else:
+            commit = git("commit", "-m", f"Scraper: daily database update {today.isoformat()}")
+            push = git("push", "origin", "main")
+            if push.returncode == 0:
+                log_lines.append(f"git push {today.isoformat()}: OK")
+            else:
+                log_lines.append(f"git push {today.isoformat()}: FAILED\n{push.stdout}\n{push.stderr}")
+    except Exception as e:
+        log_lines.append(f"git push {today.isoformat()}: EXCEPTION {type(e).__name__} {e}")
+
+    with open(LOG_PATH, "a", encoding="utf-8") as f:
+        f.write("\n".join(log_lines) + "\n")
+    print("\n".join(log_lines))
 
 
 if __name__ == "__main__":

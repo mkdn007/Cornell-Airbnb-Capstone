@@ -24,11 +24,12 @@ Reads `scraper_listing_sample.csv` (in this folder) for the 200 listing IDs, wri
 
 Running locally on a schedule via Windows Task Scheduler, once daily, no manual step required.
 
-## What's not in this folder
+## The database
 
-`calendar_snapshots.db` and `scrape_log.txt` are not committed here. Both grow daily and are local run state, not code. If useful for the final deck or a teammate wants to inspect the accumulated data, ask and a CSV export can be shared directly instead of tracking the live database in git.
+`calendar_snapshots.db` is committed here and updated automatically, the script copies it into this folder and pushes it after every daily run. Trade-off worth knowing: it's a binary file, so each day's commit stores a new full-ish blob rather than a clean diff, the repo will grow noticeably over the run. Chosen anyway so the accumulating data is visible to the team without anyone needing to run this locally. `scrape_log.txt` is not committed, that one really is just local run history.
 
 ## Files
 
-- `daily_scrape.py` — the scraper
+- `daily_scrape.py` — the scraper, plus the end-of-run git push step
 - `scraper_listing_sample.csv` — the 200-listing sample (stratified across borough and room type)
+- `calendar_snapshots.db` — the accumulating data, updated daily
