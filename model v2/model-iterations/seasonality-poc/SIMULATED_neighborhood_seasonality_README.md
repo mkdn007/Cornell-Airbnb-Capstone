@@ -35,4 +35,16 @@ Hotel ADR is used as a proxy for Airbnb seasonal price movement because no Airbn
 
 ## If used in the deck
 
-Label every chart/table built from this file, visibly, as: *"Illustrative simulation, not fitted to Airbnb data — proof of concept pending a real neighborhood-level price source."*
+Label every chart/table built from this file, visibly, as: *"Illustrative simulation, not fitted to Airbnb data, proof of concept pending a real neighborhood-level price source."*
+
+## Integration with the real, verified Ridge output
+
+`seasonal_pricing_demo.py` joins this seasonal index onto the real, verified `ridge_listing_residuals.csv` (by borough + neighborhood) and multiplies Ridge's `predicted_fair_price_usd` by the monthly `SIMULATED_price_seasonal_index`, producing a monthly price curve per listing. Ridge itself is untouched, no coefficient is refit, this is a post-hoc layer on top of the verified output, kept in a separate output file so the two are never confused.
+
+Run it from this folder: `python seasonal_pricing_demo.py`. Reads `../ridge-model/ridge_listing_residuals.csv` and this folder's `SIMULATED_neighborhood_seasonality.csv`.
+
+Outputs:
+- `SIMULATED_seasonal_pricing_demo.csv` — all 9,752 listings x 12 months (117,024 rows), for anyone who wants the full set.
+- `SIMULATED_seasonal_pricing_demo_sample.csv` — a small representative sample (the most underpriced, most overpriced, and strongest-seasonal-swing listings) for an actual host-facing demo, not all 9,752 at once.
+
+Each row carries `real_avg_occupancy_rate` (real) alongside `SIMULATED_seasonal_price_usd` (simulated) for the same month, so a demo can show a real historical occupancy figure next to the illustrative price figure without blurring which is which.

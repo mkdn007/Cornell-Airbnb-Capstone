@@ -1,0 +1,49 @@
+listing_id,listing_name,borough,neighborhood,market_segment,actual_price_usd,predicted_fair_price_usd,residual_usd,pricing_signal,month,real_avg_occupancy_rate,neighborhood_seasonality_amplitude_weight,SIMULATED_price_seasonal_index,SIMULATED_seasonal_price_usd
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Jan,0.1256,0.6979,0.814,5632.58
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Feb,0.1128,0.6979,0.8006,5539.86
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Mar,0.1402,0.6979,0.9235,6390.28
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Apr,0.166,0.6979,0.9957,6889.88
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),May,0.1629,0.6979,1.0599,7334.12
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Jun,0.5206,0.6979,1.0354,7164.58
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Jul,0.6471,0.6979,0.9376,6487.85
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Aug,0.319,0.6979,0.9162,6339.77
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Sep,0.2472,0.6979,1.1749,8129.87
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Oct,0.2035,0.6979,1.1302,7820.57
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Nov,0.152,0.6979,1.0752,7439.99
+47047419,Largest Townhouse in NYC-Steps to Central Park,Manhattan,Upper East Side,short_stay,3081.18,6919.63,-3838.45,Below fair value (underpriced),Dec,0.1663,0.6979,1.137,7867.62
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Jan,0.2922,0.5824,0.8448,1240.01
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Feb,0.2925,0.5824,0.8336,1223.57
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Mar,0.3463,0.5824,0.9362,1374.17
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Apr,0.4326,0.5824,0.9964,1462.54
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),May,0.4447,0.5824,1.05,1541.21
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Jun,0.586,0.5824,1.0296,1511.27
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Jul,0.5085,0.5824,0.9479,1391.35
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Aug,0.3157,0.5824,0.93,1365.07
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Sep,0.3247,0.5824,1.1459,1681.97
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Oct,0.2959,0.5824,1.1087,1627.37
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Nov,0.2161,0.5824,1.0627,1559.85
+846998028506317248,Premier Penthouse Apartment 4 Bdrm Midtown West,Manhattan,Midtown,short_stay,6081.33,1467.82,4613.51,Above fair value (overpriced),Dec,0.378,0.5824,1.1143,1635.59
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Jan,0.2922,0.5824,0.8448,1708.33
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Feb,0.2925,0.5824,0.8336,1685.68
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Mar,0.3463,0.5824,0.9362,1893.16
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Apr,0.4326,0.5824,0.9964,2014.89
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),May,0.4447,0.5824,1.05,2123.28
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Jun,0.586,0.5824,1.0296,2082.03
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Jul,0.5085,0.5824,0.9479,1916.81
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Aug,0.3157,0.5824,0.93,1880.62
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Sep,0.3247,0.5824,1.1459,2317.2
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Oct,0.2959,0.5824,1.1087,2241.98
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Nov,0.2161,0.5824,1.0627,2148.96
+953082621778685235,5Bdrm Midtown Penthouse Apartment/Corporate Rental,Manhattan,Midtown,short_stay,7014.67,2022.17,4992.5,Above fair value (overpriced),Dec,0.378,0.5824,1.1143,2253.3
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Jan,0.2922,0.5985,0.8405,4161.02
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Feb,0.2977,0.5985,0.829,4104.09
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Mar,0.4234,0.5985,0.9344,4625.89
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Apr,0.4863,0.5985,0.9963,4932.33
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),May,0.4722,0.5985,1.0514,5205.11
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Jun,0.6654,0.5985,1.0304,5101.15
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Jul,0.6615,0.5985,0.9465,4685.79
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Aug,0.4083,0.5985,0.9281,4594.7
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Sep,0.4088,0.5985,1.15,5693.25
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Oct,0.3147,0.5985,1.1117,5503.64
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Nov,0.2364,0.5985,1.0645,5269.97
+1300037681233437424,"8 Bedroom 5 Baths, no Steps, Outdoors, by train!",Brooklyn,Crown Heights,short_stay,1059.01,4950.65,-3891.64,Below fair value (underpriced),Dec,0.29,0.5985,1.1174,5531.86
