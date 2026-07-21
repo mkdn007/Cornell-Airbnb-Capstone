@@ -1,0 +1,38 @@
+market_segment,host_tier,borough,n_listings,median_abs_residual_usd,median_confidence,median_uncertainty_pct
+monthly,Enterprise,Brooklyn,80,19.34,61.1,0.2257
+monthly,Enterprise,Manhattan,1089,32.92,76.8,0.2226
+monthly,Enterprise,Queens,152,8.364999999999998,44.3,0.2306
+monthly,Individual,Bronx,71,22.44,22.5,0.2553
+monthly,Individual,Brooklyn,849,29.86,50.2,0.2288
+monthly,Individual,Manhattan,604,41.644999999999996,60.3,0.2259
+monthly,Individual,Queens,290,32.785,36.75,0.2338
+monthly,Individual,Staten Island,33,28.47,21.2,0.2659
+monthly,Mid-Multi,Bronx,34,7.960000000000001,26.95,0.2448
+monthly,Mid-Multi,Brooklyn,353,13.69,48.6,0.2291
+monthly,Mid-Multi,Manhattan,374,33.8,63.8,0.2252
+monthly,Mid-Multi,Queens,132,15.45,34.0,0.236
+monthly,Mid-Multi,Staten Island,13,12.67,22.9,0.2541
+monthly,Small-Multi,Bronx,97,12.49,25.6,0.2471
+monthly,Small-Multi,Brooklyn,729,21.94,53.6,0.2277
+monthly,Small-Multi,Manhattan,452,26.845,63.6,0.2252
+monthly,Small-Multi,Queens,361,17.98,36.7,0.2338
+monthly,Small-Multi,Staten Island,31,13.2,22.0,0.2588
+short_stay,Enterprise,Bronx,10,35.245,22.0,0.3072
+short_stay,Enterprise,Brooklyn,81,62.53,54.0,0.2762
+short_stay,Enterprise,Manhattan,347,95.89,64.0,0.2735
+short_stay,Enterprise,Queens,12,82.155,33.8,0.2853
+short_stay,Individual,Bronx,50,61.11,21.5,0.3113
+short_stay,Individual,Brooklyn,752,65.065,53.4,0.2762
+short_stay,Individual,Manhattan,344,103.05000000000001,54.6,0.2762
+short_stay,Individual,Queens,379,49.93,37.7,0.2831
+short_stay,Individual,Staten Island,30,60.325,19.1,0.3328
+short_stay,Mid-Multi,Bronx,4,84.25,20.6,0.3133
+short_stay,Mid-Multi,Brooklyn,113,61.92,63.4,0.2738
+short_stay,Mid-Multi,Manhattan,553,119.8,64.8,0.2733
+short_stay,Mid-Multi,Queens,30,46.355000000000004,35.7,0.2844
+short_stay,Mid-Multi,Staten Island,2,29.244999999999997,23.4,0.3032
+short_stay,Small-Multi,Bronx,61,41.31,23.0,0.303
+short_stay,Small-Multi,Brooklyn,419,52.54,59.7,0.2748
+short_stay,Small-Multi,Manhattan,512,96.94999999999999,68.7,0.2723
+short_stay,Small-Multi,Queens,294,37.58,41.1,0.2816
+short_stay,Small-Multi,Staten Island,15,40.41,19.8,0.32
