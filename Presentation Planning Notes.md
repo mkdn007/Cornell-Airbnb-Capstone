@@ -1,17 +1,18 @@
 # Presentation Planning Notes
 
-Working notes for the final presentation, capturing where things stand so anyone on the team can pick up a section. Source material: the 7/23 team call with Stan (transcript in `transcript_labeled.txt` — external, not in this repo), this planning thread, and the faculty guidance email received 7/26 (Jamie, Vidur, Rob). Nothing here is final; each section needs team sign-off before it's locked. **This is a breadcrumb document, not a finished deck or script** — it exists to give whoever picks up a section enough context to finish it, not to hand over completed slides.
+Working notes for the final presentation, capturing where things stand so anyone on the team can pick up a section. Source material: the 7/23 team call with Stan (transcript in `transcript_labeled.txt` — external, not in this repo), this planning thread, and the faculty guidance email received 7/24 (Jamie, Vidur, Rob). Nothing here is final; each section needs team sign-off before it's locked. **This is a breadcrumb document, not a finished deck or script** — it exists to give whoever picks up a section enough context to finish it, not to hand over completed slides.
 
 ---
 
 ## 0. IMPORTANT — Read This First: Faculty Guidance Changes the Plan
 
-An email from the faculty (7/26) makes clear the actual presentation context is different from what Sections 1-7 below were originally built for. **Sections 1-6 (problem/solution statements, revenue lift, cost, ROI, financial timeline) are still valid** — that's real analysis and doesn't change. **Section 7 (slide sequence) needed a rebuild** and has been redone below to reflect the real requirements. Key differences from the original plan:
+An email from the faculty (7/24) makes clear the actual presentation context is different from what Sections 1-7 below were originally built for. **Sections 1-6 (problem/solution statements, revenue lift, cost, ROI, financial timeline) are still valid** — that's real analysis and doesn't change. **Section 7 (slide sequence) needed a rebuild** and has been redone below to reflect the real requirements. Key differences from the original plan:
 
 - **Time is ~25 minutes, not 10.** The original 9-slide sequence was built for a 10-minute board-style pitch per Stan's coaching. Stan's advice is still good *advice* (business-first framing, one message per slide, don't over-index on technical depth), but the actual grading rubric requires more content than a 10-minute pitch allows.
+- **⚠️ OPEN QUESTION, awaiting faculty response:** is the 25 ± minutes inclusive of Q&A, or presentation-only with Q&A separate? This is not a minor detail — it changes the deck strategy materially. If Q&A is included in the 25, the actual talking portion needs to be much shorter (something like a 10-15 min presentation + 10-15 min Q&A) than if the full 25 is presentation time with Q&A afterward. **Everything in Section 7 below is built on the assumption that the 25 (planned to ~20) is presentation-only** — that assumption needs to be confirmed, not treated as settled. This is on the agenda for the Thursday 11:30am meeting with Jamie (see Section 10).
 - **The demo should be pre-recorded and narrated, not live.** Faculty explicitly warn: "Murphy's law prevails... if something will go wrong it will."
 - **There's a formal grading rubric** (below) with required content items that weren't all in the original plan — most notably 2-4 slides on key variables/relationships (EDA), which didn't exist before at all.
-- **Submission has two parts:** the slide deck (PPT or PDF) goes to Canvas; a link to this GitHub repo (with model outputs/interim work) needs to go to the faculty member and CA separately, by email or Canvas comment. **This hasn't been done yet — someone needs to send that email.**
+- **Submission has two parts:** the slide deck (PPT or PDF) goes to Canvas; a link to this GitHub repo (with model outputs/interim work) goes to the faculty member and CA separately, by email or Canvas comment. **The repo link has already been shared with our primary faculty advisor (Jamie).** Unconfirmed whether the CA has it too — worth double-checking before treating this as fully done.
 
 ### The grading rubric (50 points total = 25% of overall grade)
 
@@ -209,7 +210,7 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 
 ---
 
-## 7. Slide Sequence (~25-minute presentation) — REBUILT 2026-07-26 for the real time limit and rubric
+## 7. Slide Sequence (~25-minute presentation) — REBUILT following the 7/24 faculty guidance for the real time limit and rubric
 
 **This replaces the earlier 9-slide/10-minute version**, which was built for Stan's board-pitch coaching context, not the actual grading requirements. Stan's underlying advice (business-first, one message per slide, minimal unnecessary technical depth) is still incorporated — there's just more room now, and more required content to cover.
 
@@ -254,7 +255,7 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 
 Per the faculty email, two separate submission steps:
 1. **Slide deck** (PPT or PDF of the final presentation slides) → Canvas
-2. **A link to this GitHub repo**, with model outputs/interim work/appendices → sent directly to the faculty member and CA, by email or as a Canvas comment. **This has not been done yet as of this note (2026-07-26) — someone needs to own sending it.**
+2. **A link to this GitHub repo**, with model outputs/interim work/appendices → sent directly to the faculty member and CA, by email or as a Canvas comment. **Already shared with our primary faculty advisor (Jamie).** Unconfirmed whether the CA has it too — someone should double-check/send separately if not. **Also now Jai's responsibility to clean up and organize the repo itself** (see Section 10) — right now it's a working directory, not something built for a grader to navigate cleanly.
 
 ---
 
@@ -264,13 +265,15 @@ Per the faculty email, two separate submission steps:
 |---|---|
 | **Manas** (lead) | Script writing — the message the team delivers, not just the slides. Supported by Francois and Rachael on the script itself and on slide construction/visualizations. |
 | **Francois & Rachael** | Support Manas on script + slide construction, including visualizations. |
-| **Jai** | Tightening the financials (includes the NPV/discounting and marginal-cost points flagged in Sections 4-5) plus additional model robustness checks — not expected to materially change headline numbers, but may shift them slightly. |
+| **Jai** | Tightening the financials (includes the NPV/discounting and marginal-cost points flagged in Sections 4-5) plus additional model robustness checks — not expected to materially change headline numbers, but may shift them slightly. **Also: clean up and organize the GitHub repo** so graders don't get lost in it — right now it reads as a working directory, and it needs to present as professional and well-organized given it's already been shared with our faculty advisor. |
 | **Brendan** | Assembling the appendices and the long-form work behind the model and presentation. |
 | **Unassigned, TBD** | UI/slide branding & design pass — generically Airbnb-styled look, kept consistent between the slide deck and the dashboard UI. Nobody owns this yet. |
 
 **Guiding principle:** the message matters more than the slides. Slides support the message; the framework in Sections 0-7 exists to make sure the course's required content and the faculty's advice are actually covered, not to dictate the narrative.
 
-**Saturday team meeting objective:** kick off the work assigned above and leave room for questions/clarifications — not a checkpoint where finished work is expected yet.
+**Saturday team meeting agenda:**
+1. Kick off the work assigned above and leave room for questions/clarifications — not a checkpoint where finished work is expected yet.
+2. **Finalize the Thursday 11:30am meeting with Jamie** (our faculty advisor). This is also the natural moment to get a direct answer on the open Q&A-timing question flagged in Section 0 — worth putting on the agenda for that meeting specifically if it isn't answered by email first.
 
 ---
 
