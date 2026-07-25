@@ -68,10 +68,10 @@ An email from the faculty (7/26) makes clear the actual presentation context is 
 
 **Current draft:**
 > *We turn Airbnb's own data into a pricing engine for hosts.*
-> The product still gives hosts a recommended optimal price, same as Smart Pricing, but goes further: it shows the host where that price sits relative to real comps, explains why, and lets them test different price points themselves.
+> Airbnb already recommends prices, but it doesn't give hosts enough evidence to trust and act on those recommendations. This product does: it shows the host where their price sits relative to real comps, explains why, and lets them test different price points themselves.
 
 **Notes:**
-- Key differentiator is agency + explainability, not a different price output.
+- Key differentiator is agency + explainability, not a different price output. (Framing above tightened per Manas's note, 7/24 — sharper version of the same "goes further than Smart Pricing" point.)
 - Current model output is a **GBM quantile-regression "fair value" price (with a calibrated confidence interval)** plus a **KNN peer-comparable layer** that also surfaces amenity/operational gaps — reconcile pitch language with this before finalizing.
 - **Script-only line (not on the slide):** Brendan's Commander's Intent / Mission Command framing — soldiers perform better knowing the *why*, not just the order, because it builds buy-in. Same logic: a host who understands why a price is optimal is more likely to act on it. This is also the mechanism that makes the revenue-lift number realizable (see adoption rate, Section 3) — land this line during the Solution Statement slide delivery (Section 7, Slide 7).
 
@@ -86,7 +86,7 @@ An email from the faculty (7/26) makes clear the actual presentation context is 
 - 4,931 listings (50.6%) underpriced vs. fair value; 4,821 (49.4%) overpriced. (Under the earlier Ridge model this was a much less balanced 60.6%/39.4% — the GBM model is better calibrated, so less of the old gap survives as genuine mispricing vs. model noise.)
 - Occupied nights/year backed out from Inside Airbnb's own formula: `estimated_annual_revenue / nightly_price`.
 
-**Working assumption (explicit, presentation-only):** presenting from inside Airbnb, so assuming access to real occupancy-response data Airbnb would have but this team's dataset doesn't. Moving an underpriced listing to fair value is treated as roughly occupancy-neutral.
+**Working assumption (explicit, presentation-only — per Manas, 7/24):** this dataset identifies pricing *opportunity*, not causal revenue uplift. In reality, Airbnb would validate these recommendations against its own proprietary booking-conversion and price-elasticity data before deployment — data this team's dataset doesn't contain. For presentation purposes, we stand in for that with a simplifying assumption: moving an underpriced listing to fair value is treated as roughly occupancy-neutral, since fair value is itself calibrated to what comparable listings already charge and get booked at.
 
 **Outlier control — 1-99 percentile trim (recommended):** only ~50 listings sit above the 99th percentile, and that's exactly where prediction reliability breaks down (luxury listings, mean actual price ~$927/night vs. model "fair" price ~$1,153/night). Wider trims (2-98, 5-95) cut hundreds more listings for little additional cleanup — risks discarding real signal.
 
@@ -95,6 +95,8 @@ An email from the faculty (7/26) makes clear the actual presentation context is 
 **Base after 1-99 trim + model-noise discount: $25.6M total addressable host revenue lift** (17.9% of the underpriced subset's current revenue), before any adoption-rate haircut. (Down from $41.4M under Ridge — smaller, more balanced underpriced pool, partly offset by the lighter noise discount.)
 
 **Adoption rate:** no external benchmark exists for "% of a measured pricing gap a host base actually captures" — searched revenue-management/dynamic-pricing literature, found nothing that maps cleanly. **Presented as a sensitivity table, not one invented number** — stronger for a rubric that rewards "evidence-backed" claims, and it's the number the Commander's Intent narrative argues the team can move.
+
+**In progress (Jai, as of 7/25):** tightening the financials generally (likely includes the NPV/discounting and marginal-cost points flagged above) plus a few additional model robustness tweaks. Jai's own framing: these aren't expected to materially change the headline numbers, just make the underlying model more defensible under scrutiny. Numbers in this section may move slightly once that lands — not a signal to redo Sections 3-6 from scratch, just to re-check them against whatever Jai pushes.
 
 **Sensitivity table (GBM base, $25.6M ceiling), with payback (build $190K + $105K/yr run cost, Section 4):**
 
@@ -149,6 +151,8 @@ An email from the faculty (7/26) makes clear the actual presentation context is 
 
 **Open items:** decide "cost if built new" vs. "marginal cost to Airbnb" framing (some infra likely already exists on Airbnb's platform) — worth a one-line acknowledgment either way.
 
+**Flagged by Jai (7/24), not yet actioned — Jai to own:** the $190K/$105K figures above are "cost if built standalone." Airbnb almost certainly already has model-serving infra, A/B testing pipelines, and pricing-feature engineering in place, so the real *incremental* cost of adding this feature is likely closer to **$50-80K in engineering time** (Jai's estimate, not externally sourced). Using the standalone figure overstates cost and therefore understates ROI. If this gets incorporated, it should run as a second scenario alongside the $190K greenfield build, not a replacement, since the greenfield number has real sourced benchmarks behind it — and Sections 5 and 6's ROI/payback tables would need a second column to match.
+
 ---
 
 ## 5. ROI
@@ -169,6 +173,8 @@ Using NPV/IRR/Payback methodology, flat steady-state adoption (Section 6 has the
 **Recommendation:** lead with the 25% and 50% rows as "conservative" and "expected" cases; don't headline the 100% row, it invites the obvious adoption-skepticism pushback.
 
 **Open items:** none blocking — this table is a flat-adoption simplification; Section 6 has the year-by-year ramped version, which is the one to actually present.
+
+**Flagged by Jai (7/24), not yet actioned — Jai to own:** the "5-yr net revenue" figures above are nominal sums, a dollar in Year 5 is treated the same as a dollar today. That's inconsistent with naming NPV as the methodology at the top of this section without actually discounting anything. Jai's read: a proper NPV at a modest 10% discount rate would reduce these numbers somewhat, not enough to hurt the story, but worth doing for a technically rigorous audience (and for internal consistency with Section 4's cited methodology). Applies to Section 6's year-by-year cash flows too, same issue there.
 
 ---
 
@@ -231,15 +237,16 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 
 **Not yet done — real open items for Slide 7:**
 - Team to assign owners for each slide
-- Build the actual slide content for each row — this document only outlines what goes where, none of it is drafted yet. Slide 3 and Slide 8 especially need real editorial discipline given how much each is carrying
+- Build the actual slide content for each row — this document only outlines what goes where, none of it is drafted yet. Slide 3 and Slide 8 especially need real editorial discipline given how much each is carrying. **Owner: Manas (lead), with Francois and Rachael on slide construction and visualizations.**
 - Record and edit the demo video
-- Prepare the separate **Q&A appendix** (not part of the 13 timed slides) — pull from Sections 3-6's full backup tables/methodology detail
+- Prepare the separate **Q&A appendix** (not part of the 13 timed slides) — pull from Sections 3-6's full backup tables/methodology detail. **Owner: Brendan** (assembling appendices and the long-form work behind the model and presentation generally).
+- **UI/slide branding & design pass — unassigned, TBD.** Since the pitch is framed as an internal Airbnb team, the UI and the slide deck should probably share a consistent, generically Airbnb-styled look rather than looking like two unrelated projects. Nobody owns this yet.
 
 ---
 
 ## 8. Presentation Script
 
-**Not started.** One confirmed piece: the Commander's Intent framing (Section 2) is meant for spoken delivery only during Slide 7 (Solution Statement), not slide text. Full script should wait until Section 7's slide content is actually drafted, not just outlined.
+**Owner: Manas (lead), with Francois and Rachael supporting.** Team principle, decided 7/24-25: the message the team delivers matters more than the slides themselves — slides exist to support the message, not the other way around. Sections 1-6 of this document (problem/solution framing, the real numbers) are the substantive backbone the script should draw from; Section 7's slide outline exists to make sure the course's required content and the faculty's advice are actually covered, not to dictate the narrative. One confirmed script beat: the Commander's Intent framing (Section 2) is meant for spoken delivery only during Slide 7 (Solution Statement), not slide text.
 
 ---
 
@@ -251,9 +258,26 @@ Per the faculty email, two separate submission steps:
 
 ---
 
+## 10. Team Assignments (decided 2026-07-24/25)
+
+| Owner | Scope |
+|---|---|
+| **Manas** (lead) | Script writing — the message the team delivers, not just the slides. Supported by Francois and Rachael on the script itself and on slide construction/visualizations. |
+| **Francois & Rachael** | Support Manas on script + slide construction, including visualizations. |
+| **Jai** | Tightening the financials (includes the NPV/discounting and marginal-cost points flagged in Sections 4-5) plus additional model robustness checks — not expected to materially change headline numbers, but may shift them slightly. |
+| **Brendan** | Assembling the appendices and the long-form work behind the model and presentation. |
+| **Unassigned, TBD** | UI/slide branding & design pass — generically Airbnb-styled look, kept consistent between the slide deck and the dashboard UI. Nobody owns this yet. |
+
+**Guiding principle:** the message matters more than the slides. Slides support the message; the framework in Sections 0-7 exists to make sure the course's required content and the faculty's advice are actually covered, not to dictate the narrative.
+
+**Saturday team meeting objective:** kick off the work assigned above and leave room for questions/clarifications — not a checkpoint where finished work is expected yet.
+
+---
+
 ## Reminders for whoever picks this up
 
 - **Sign-off rule:** none of the parent to-do items get marked done just because a draft exists here — needs the whole team's sign-off first.
 - **Scope:** NYC-only pilot, not platform-wide, per the README's positioning.
 - **Framing:** presenting from a hypothetical "we are Airbnb's internal product team" position, which is why real occupancy-response/elasticity data is assumed even though the actual dataset doesn't contain it.
 - **Model version:** GBM quantile regression + KNN (v3) is current — supersedes the earlier Ridge model referenced in some older repo docs. The GBM code, updated pricing-signal outputs, and demo UI prototypes currently live on the `final-model-package` branch, not yet merged into `main`.
+- **Ownership:** see Section 10 above for who's doing what as of 7/25.
