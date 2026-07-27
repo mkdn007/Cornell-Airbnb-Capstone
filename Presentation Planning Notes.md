@@ -9,7 +9,7 @@ Working notes for the final presentation, capturing where things stand so anyone
 An email from the faculty (7/24) makes clear the actual presentation context is different from what Sections 1-7 below were originally built for. **Sections 1-6 (problem/solution statements, revenue lift, cost, ROI, financial timeline) are still valid** — that's real analysis and doesn't change. **Section 7 (slide sequence) needed a rebuild** and has been redone below to reflect the real requirements. Key differences from the original plan:
 
 - **Time is ~25 minutes, not 10.** The original 9-slide sequence was built for a 10-minute board-style pitch per Stan's coaching. Stan's advice is still good *advice* (business-first framing, one message per slide, don't over-index on technical depth), but the actual grading rubric requires more content than a 10-minute pitch allows.
-- **⚠️ OPEN QUESTION, needs an answer NLT Monday 7/27:** is the 25 ± minutes inclusive of Q&A, or presentation-only with Q&A separate? This is not a minor detail — it changes the deck strategy materially. If Q&A is included in the 25, the actual talking portion needs to be much shorter (something like a 10-15 min presentation + 10-15 min Q&A) than if the full 25 is presentation time with Q&A afterward. **Everything in Section 7 below is built on the assumption that the 25 (planned to ~20) is presentation-only** — that assumption needs to be confirmed, not treated as settled. **Do not wait for the Thursday 11:30am meeting with Jamie to get this answer** — reach out by email this weekend. Script v1 and Deck v1 (due Monday and Tuesday, see Section 11) are being built on the presentation-only assumption; if that assumption is wrong and the answer doesn't land until later in the week, the team is looking at rebuilding the whole script and deck under real time pressure instead of a course correction.
+- **✅ RESOLVED (7/26):** Jamie confirmed **25 minutes presentation + 10 minutes Q&A, separate.** This matches the assumption Section 7 was already built on — no rebuild needed. The team's ~20-minute planned target (buffer under the 25) still stands.
 - **The demo should be pre-recorded and narrated, not live.** Faculty explicitly warn: "Murphy's law prevails... if something will go wrong it will."
 - **There's a formal grading rubric** (below) with required content items that weren't all in the original plan — most notably 2-4 slides on key variables/relationships (EDA), which didn't exist before at all.
 - **Submission has two parts:** the slide deck (PPT or PDF) goes to Canvas; a link to this GitHub repo (with model outputs/interim work) goes to the faculty member and CA separately, by email or Canvas comment. **The repo link has already been shared with our primary faculty advisor (Jamie).** Unconfirmed whether the CA has it too — worth double-checking before treating this as fully done.
@@ -267,15 +267,15 @@ Per the faculty email, two separate submission steps:
 | **Francois & Rachael** | Support Manas on script + slide construction, including visualizations. |
 | **Jai** | Tightening the financials (includes the NPV/discounting and marginal-cost points flagged in Sections 4-5) plus additional model robustness checks — not expected to materially change headline numbers, but may shift them slightly. **Also: clean up and organize the GitHub repo** so graders don't get lost in it — right now it reads as a working directory, and it needs to present as professional and well-organized given it's already been shared with our faculty advisor. |
 | **Brendan** | Assembling the appendices and the long-form work behind the model and presentation. |
-| **Unassigned, TBD** | UI/slide branding & design pass — generically Airbnb-styled look, kept consistent between the slide deck and the dashboard UI. Nobody owns this yet. |
+| **Francois** (Jai helping) | UI/slide branding & design pass — generically Airbnb-styled look, kept consistent between the slide deck and the dashboard UI. Assigned at Saturday's kickoff (7/25). |
 
 **Guiding principle:** the message matters more than the slides. Slides support the message; the framework in Sections 0-7 exists to make sure the course's required content and the faculty's advice are actually covered, not to dictate the narrative.
 
 **Saturday team meeting agenda:**
 1. Kick off the work assigned above and leave room for questions/clarifications — not a checkpoint where finished work is expected yet.
 2. **Finalize the Thursday 11:30am meeting with Jamie** (our faculty advisor).
-3. **Assign an owner for UI/slide branding** (still TBD as of this note) — it's now on the critical path for the demo recording (Section 11).
-4. **Someone emails Jamie this weekend** about the Q&A-timing question (Section 0) — do not wait for the Thursday meeting to ask. Need an answer no later than Monday 7/27, since that's when Script v1 is due and it's being built on an unconfirmed assumption.
+3. ✅ **UI/slide branding owner assigned** — Francois, with Jai helping (see Section 10).
+4. ✅ **Q&A-timing question resolved** — see Section 0.
 5. **Everyone joins the GitHub repo as a collaborator** — Manas, Rachael, and Francois currently aren't on it (only Brendan and Jai show up as collaborators as of 7/25). Jai (repo owner) needs to send invites; each person needs to accept and confirm access before Sunday's work day starts.
 
 ---
@@ -286,9 +286,9 @@ Daily team meetings Monday-Friday, work starting Saturday. Structure: script and
 
 | Day | Meeting | Due | Notes |
 |---|---|---|---|
-| **Sat 7/25** | Kickoff (today) | — | See Section 10's agenda above. UI branding owner assigned here or ASAP after. |
-| **Sun 7/26** | *(work day, no meeting)* | — | Jai: financial tightening + model robustness, push to land before Monday. UI: final tech pass begins. Manas/Francois/Rachael: start Script v1. Brendan: start appendices. |
-| **Mon 7/27** | **Script v1 Review** | Script v1 | Discuss whether the message lands, flag narrative gaps. Status check: Jai's financials, UI tech pass. **Also: is there an answer from Jamie on the Q&A-timing question yet?** If not, this is now the top-priority follow-up — the deadline for that answer is today. |
+| **Sat 7/25** | Kickoff | — | See Section 10's agenda above. UI branding owner assigned: Francois (Jai helping). |
+| **Sun 7/26** | *(work day, no meeting)* | — | Jai: financial tightening + model robustness, push to land before Monday. Francois (+ Jai): UI final tech pass begins. Manas/Francois/Rachael: start Script v1. Brendan: start appendices. |
+| **Mon 7/27** | **Script v1 Review** | Script v1 | Discuss whether the message lands, flag narrative gaps. Status check: Jai's financials, UI tech pass. Q&A-timing question resolved 7/26 (see Section 0) — no rebuild needed. |
 | **Tue 7/28** | **Deck v1 Review** | Deck v1 (13 slides, populated) | Discuss whether the deck supports the script, not just covers rubric items. UI branding pass should be underway; target UI approval Tue night/Wed morning. |
 | **Wed 7/29** | **Script v2 Review** | Script v2 (folds in Jai's finalized numbers + Meeting 1/2 feedback) | **Gate: UI approved final** (tech + branding both done) unlocks demo recording. **Demo recording scheduled for Wed**, right after approval. |
 | **Thu 7/30** | **Deck v2 Review** | Deck v2 (demo embedded, finalized financials, near-final repo cleanup) | **Due EOD Thursday, firm: Brendan's appendices, fully complete** — not just close, so the team has them in hand to review before Friday, not discovering gaps at v3 FINAL. Thursday 11:30am meeting with Jamie happens same day — prep open questions beforehand. |
