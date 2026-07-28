@@ -10,6 +10,8 @@ The dataset was obtained from **Inside Airbnb**, an independent, non-commercial 
 
 **Problem.** The EDA surfaced a clear *occupancy gap*: Small-Multi operators (2–5 listings) run **71.5%** occupancy while Individual hosts sit at **47.3%** — yet individual hosts often price their listings sub-optimally, leaving revenue on the table. Hosts have no objective way to know whether they are over- or under-priced, or what to change.
 
+> **Correction (2026-07-28):** the 71.5% Small-Multi figure does not reproduce from `active_listings_clean_v6.csv` under any occupancy metric checked (mean, median, calendar-based, or raw days-booked) — most likely a transcription error from the original EDA writeup, no source notebook survives to check it against. The Individual (47.3%) and Enterprise (37.2%, see `Data Cleaning Process.md`) figures do reproduce closely, so this looks isolated to the one number. Verified current numbers (mean `occupancy_rate_calendar`): **Individual 44.1%, Small-Multi 37.8%, Mid-Multi 32.6%, Enterprise 30.0%** — occupancy actually *declines* as host scale increases, the opposite of the original claim. Use the corrected numbers and direction in any slide/script content going forward; this hasn't propagated beyond these repo docs as of this correction.
+
 **Our solution — a Revenue Optimizer (Option C).** A two-layer, host-facing diagnostic:
 
 1. **Fair-value pricing engine** — a hedonic regression estimates what each listing *should* charge given its location, size, amenities, and ratings. The gap between actual and fair price is the **mispricing signal** ("you're priced $X above/below comparable value").

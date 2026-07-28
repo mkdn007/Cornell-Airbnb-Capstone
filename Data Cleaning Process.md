@@ -107,6 +107,8 @@ Using `calculated_host_listings_count`, each listing is assigned a host tier bas
 
 This is the primary segmentation variable from the EDA. Small-Multi operators (71.5% occupancy) dramatically outperform Individual hosts (47.3%) and Enterprise operators (37.2%).
 
+> **Correction (2026-07-28):** the 71.5% Small-Multi figure doesn't reproduce from the current data under any occupancy metric tried — likely a transcription error, no source notebook survives to check it against. Individual (47.3%) and Enterprise (37.2%) do reproduce closely. Verified current numbers (mean `occupancy_rate_calendar`): Individual 44.1%, Small-Multi 37.8%, Mid-Multi 32.6%, Enterprise 30.0% — occupancy *declines* with host scale, opposite the original claim. See `README.md` for the full reasoning.
+
 A binary flag `is_monthly_rental` is also added here:
 - `is_monthly_rental = 1` if `min_nights >= 28`
 - **58.9% of active listings** are flagged as monthly rentals — a critical finding. These listings are long-term rental products, not short-term stays, and behave fundamentally differently in pricing models. The modeling team should consider filtering these out or handling them separately.
