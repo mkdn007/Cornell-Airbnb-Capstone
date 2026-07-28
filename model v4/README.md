@@ -1,4 +1,6 @@
-# NYC Airbnb Fair-Price Model: Final Package
+# Model V4 — GBM Quantile Regression (CURRENT MODEL)
+
+**This is the current model the deliverable runs on.** Supersedes `model v1/` (OLS baseline), `model v2/` (Ridge + KNN), and `model v3/` (confidence scoring, still Ridge-based) — see the root `README.md` for the full version progression and why each change happened. Full technical history, including the price-elasticity pilot built on top of this model, is in `NYC_Airbnb_Appendix_Technical.docx`.
 
 See `dev_journey_narrative.md` for the full story of how we got here.
 

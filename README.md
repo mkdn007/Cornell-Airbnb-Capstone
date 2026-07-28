@@ -24,17 +24,16 @@ Positioned commercially as either a **direct-to-consumer SaaS** tool for indepen
 
 ---
 
-## Where we are now
+## Model version progression
 
-| Phase | Status |
-|-------|--------|
-| Data cleaning & feature engineering | ✅ Complete — 9,752 active listings, 80 columns |
-| EDA & business-case alignment | ✅ Complete |
-| **Model v1** — baseline log-linear OLS | ✅ Complete |
-| **Model v2** — Ridge pricing engine + KNN benchmarking, segment-split | ✅ Complete (current) |
-| Dashboard & final narrative | 🔄 In progress |
+| Version | Approach | Status |
+|---|---|---|
+| **Model v1** (`model v1/`) | Log-linear OLS baseline | Superseded |
+| **Model v2** (`model v2/`) | Ridge regression + KNN benchmarking, segment-split (6-model bake-off selected Ridge for coefficient stability) | Superseded |
+| **Model v3** (`model v3/`) | Same Ridge engine as v2, adds confidence scoring + host-tier-aware KNN | Superseded |
+| **Model v4** (`model v4/`) | **GBM quantile regression (q10/q50/q90) with conformal calibration**, same host-tier-aware KNN layer carried forward, plus seasonality, two live UI tools, a real-price scraper proof of concept, and a price-elasticity pilot | **✅ CURRENT — this is what the deliverable runs on** |
 
-The current modeling work (**Model v2**) refined the baseline into a production diagnostic: a systematic 6-model bake-off selected **Ridge regression** as the pricing engine (stable, interpretable coefficients at top-tier accuracy), a **KNN layer** was added to explain each pricing gap, and both were **split by market segment** (short-stay vs monthly) so listings are only ever benchmarked against genuinely comparable peers.
+Each version's own README explains why the change was made, not just what changed. Full narrative in [`NYC_Airbnb_Appendix_Technical.docx`](NYC_Airbnb_Appendix_Technical.docx); anticipated Q&A challenges with prepared answers in [`NYC_Airbnb_Anticipated_Questions.docx`](NYC_Airbnb_Anticipated_Questions.docx).
 
 ---
 
@@ -45,9 +44,14 @@ The current modeling work (**Model v2**) refined the baseline into a production 
 | [Data Cleaning Process](Data%20Cleaning%20Process.md) | Full cleaning + feature-engineering pipeline: active-listing filter, imputation, amenity parsing, host tiers, calendar occupancy, BERT sentiment, and the complete column dictionary |
 | [Model v1 — Baseline OLS](model%20v1/README_MANAS_MODELING.md) | The original log-linear OLS pricing model: target, features, holdout results (OLS vs Random Forest), and the residual definition |
 | [Model v2 — Model Iterations](model%20v2/model-iterations/README.md) | How the model evolved from OLS → Ridge → KNN → segment split, with links to the testing, pricing, and benchmarking sub-docs |
-| [Capstone Presentation](Model%20Definition%20%26%20Initial%20Results%20%28FINAL%29.pdf) | Slide deck (PDF) covering the business case, EDA findings, and modeling approach — also viewable [online](https://1drv.ms/p/c/f8ae865111d402f7/IQDEBYREy05pSo0NkkGYIBVBAcsa5nQCOXdlw9JKNpdyrlA?e=UWj3oa) |
+| [Model v4 — CURRENT](model%20v4/README.md) | The GBM pricing engine, KNN layer, seasonality, live UI tools, scraper, and elasticity pilot — what the deliverable actually runs on |
+| [NYC_Airbnb_Appendix_Technical.docx](NYC_Airbnb_Appendix_Technical.docx) | Full technical narrative: V1→V2→V3→V4, EDA, price elasticity, business recommendations, and carried-forward limitations. Backup for Q&A, not part of the timed presentation. |
+| [NYC_Airbnb_Anticipated_Questions.docx](NYC_Airbnb_Anticipated_Questions.docx) | Prepared answers to the sharpest likely challenges — companion to the appendix above |
+| [Presentation Planning Notes](Presentation%20Planning%20Notes.md) | Ground-truth source for the final presentation: problem/solution framing, revenue-lift methodology, cost/ROI, slide sequence, team assignments, and schedule |
+| [Capstone Presentation](Model%20Definition%20%26%20Initial%20Results%20%28FINAL%29.pdf) | Original slide deck (PDF) covering the business case, EDA findings, and modeling approach — also viewable [online](https://1drv.ms/p/c/f8ae865111d402f7/IQDEBYREy05pSo0NkkGYIBVBAcsa5nQCOXdlw9JKNpdyrlA?e=UWj3oa) |
 | `Capstone Project Visualizations.twb` | Tableau workbook with the EDA and results visualizations |
-| [Team Status Dashboard](https://claude.ai/code/artifact/b3c6574e-a7fc-44fb-a11b-e05adbea1433) | Live agile-style board: what's frozen for the check-in, the three exploratory branches, and open decisions ahead of the Wed 7/22 go/no-go |
+| [Team Status Dashboard](https://claude.ai/code/artifact/b3c6574e-a7fc-44fb-a11b-e05adbea1433) | Live status board: what's locked, what's building now, and open risks ahead of Friday's v3 FINAL |
+| [GitHub Projects Board](https://github.com/users/mkdn007/projects/1) | Day-to-day task tracker |
 
 ---
 
