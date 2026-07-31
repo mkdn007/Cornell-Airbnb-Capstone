@@ -103,22 +103,53 @@ An email from the faculty (7/24) makes clear the actual presentation context is 
 - **Monthly: not significant** (p=0.734) — no detectable within-listing price/occupancy relationship in this pilot; occupancy-neutral assumption stands for monthly, unchanged.
 - **Sample caveat, stated plainly:** the 64 short-stay listings in the panel skew hard toward established, loyal-demand Individual hosts (6× the reviews, 3× the hosting tenure of the population) — this is a conservative floor on market-wide price sensitivity, not a claim about all 4,008 short-stay listings.
 
-**Revised revenue-lift range for short-stay, replacing the single $25.6M figure:**
+**✅ DONE (7/29): Jai's second pass — review-count segmentation, fixing the extrapolation problem in the first version.** The −0.916 coefficient was measured on established, high-review hosts. Applying it uniformly to every short-stay listing (including brand-new ones) extrapolates past where it was actually measured — the same flaw the team already avoided on the model side by capturing reviews as a feature. Jai's fix: split at 142 reviews (the panel's own median, where β was actually measured).
 
-| Assumption | Short-stay lift | Monthly lift (unaffected) | Total |
+- **≥142 reviews:** apply the measured β = −0.916.
+- **<142 reviews:** don't extrapolate — hold at β = −1.0 (mathematical breakeven → $0), even though the honest expectation is these newer, more price-sensitive listings sit somewhere between −1.0 and −0.92 with real (if unmeasured) upside.
+
+**Underpriced band (short-stay + monthly):**
+
+| Scenario | SS ≥142 reviews | SS <142 reviews | Monthly (unaffected) | Total |
+|---|---|---|---|---|
+| **Ceiling** (β=0, occupancy-neutral — won't happen, real upper wall) | — | — | — | **~$26.8M** |
+| **Segmented estimate** (the honest middle) | +$0.34M | ~$0 | +$7.94M | **$8.27M** |
+| **Floor** (all short-stay at breakeven) | ~$0 | ~$0 | +$7.94M | **~$7.9M** |
+
+*(The ~$26.8M ceiling here is Jai's refreshed figure — slightly above the $25.6M cited earlier in this section; the gap is the segmentation refinement, not a data change. Use $26.8M going forward.)*
+
+**Why underpriced short-stay contributes almost nothing (+$0.34M) despite being half the dataset:** the median underpriced short-stay listing sits ~17-20% below fair value. At β≈−0.92, raising price by that much predicts an occupancy drop of similar size — gain and loss nearly cancel. The number that actually carries the pitch is the **monthly segment (+$7.94M)**, because monthly elasticity came back statistically insignificant (p=0.734) and stays occupancy-neutral. If a professor asks "isn't your revenue basically just the monthly listings?" — yes, and that's the honest reason why.
+
+**Overpriced listings — reopened 7/29, superseding the 7/27 "fairness signal only" decision.** The earlier call excluded overpriced entirely, reasoning that since revenue's elasticity w.r.t. price (`1+β` ≈ 0.084) is barely positive, cutting price is revenue-negative for hosts on average. That's true for the *established* segment — but it's the same extrapolation error being fixed above, just left uncorrected on this side. Applying the same 142-review segmentation instead of a population-average dismissal:
+
+| Scenario | β assumption | Overpriced host GBV | Nights recovered |
 |---|---|---|---|
-| Occupancy-neutral (upper bound — no occupancy response assumed) | $17.3M | $8.3M | **$25.6M** |
-| β=−0.916 applied (lower bound — measured response) | $1.3M | $8.3M | **$9.6M** |
+| **Floor** (measured/breakeven) | −0.916 for ≥142, −1.0 for <142 | **−$0.70M** | +77,606/yr |
+| **Midpoint** (newbies genuinely elastic) | −0.916 for ≥142, −1.3 for <142 | **+$7.06M** | +98,741/yr |
+| **Ceiling** (illustrative, won't happen) | −1.5 for all overpriced | **+$18.4M** | — |
 
-**Why the short-stay number drops so sharply:** the median underpriced short-stay listing sits ~17-20% below fair value. At β≈−0.92, raising price by that much predicts an occupancy drop of similar magnitude — the price gain and the occupancy loss nearly cancel out. Short-stay demand is close to unit-elastic, so hosts can't simply raise to fair value and expect a windfall. **The honest range is $9.6M–$25.6M, not a single number** — this is exactly the sensitivity-table framing this section already argued for, now with a real measured floor instead of an assumed ceiling.
+**Recommendation (Brendan's judgment, 7/29): adopt this instead of the 7/27 exclusion.** The segmented version applies the same rigor to both halves of the dataset rather than nuance on one side and a blanket dismissal on the other — that's more defensible under questioning, not less, and it doesn't cost the narrative anything: the existing two-pillar frame (**underpriced = margin, overpriced = volume**) already covers it. On the floor, established overpriced hosts book a real, honestly-stated −$0.70M loss on GBV, and +77,606 recovered nights is the actual story here, not dollars.
 
-**Overpriced listings — a related finding, resolved 7/27:** since revenue's elasticity w.r.t. price is `1+β` (≈0.084, barely positive under this model), lowering price for overpriced listings is revenue-*negative* for the host, not revenue-positive — meaning no rational host would act on a "lower your price" recommendation for revenue reasons, and it shouldn't be counted as monetizable opportunity or netted against the short-stay gain above. **Decision: frame the overpriced half of the dataset as a fairness/benchmarking signal in the deck ("here's how you compare to peers"), not a second revenue lever.** Worth a one-line acknowledgment on Slide 10 so it doesn't look like an oversight if asked.
+**✅ DECIDED — team agreed (confirmed 7/31): Option B, the combined figure.** Jai's master financial doc (`REVENUE_LIFT_ROI_MASTER.md`, Section 5) lays the choice out explicitly as "Option A (underpriced only, $8.27M)" vs "Option B (combined, $7.57M)" and recommends Option B. Every downstream deliverable already reflects it: the deck leads with $7.6M, the UI demo script uses $7.57M / $1.17M. **This supersedes the 7/27 "fairness signal only" decision.** The only thing left is leftover language — see the cleanup item below.
 
-**Still in progress (Jai):** NPV-discounting Sections 5-6's tables and the marginal-cost-to-Airbnb scenario (both flagged below, not yet actioned) — plus reconciling Sections 5-6's tables against this new $9.6M–$25.6M range instead of the flat $25.6M ceiling they're currently built on. **Open item, not yet decided: does Section 5/6 lead with the conservative $9.6M floor, the $25.6M ceiling, or present both as a range?** This is now the single biggest open call in the financial story.
+**⚠️ Language cleanup still needed (as of 7/31):** the deck's Slide 8 spoken line, Appendix A5's label ("Underpriced host GBV"), and the scripted Q&A answer all still describe overpriced as *fully excluded*, which contradicts the combined figure they sit next to. The number is right; the words around it are stale. Fix all three to say what the math actually does: overpriced is included, as a small honest −$0.70M loss on established hosts, and the real overpriced story is +77,606 recovered nights rather than dollars.
 
-**Not yet done:** the elasticity model itself (`elasticity_model.py`, `README_elasticity_model.md`, outputs, raw AirROI data) exists only locally as of 7/27 — needs pushing to the repo so the faculty-facing link actually shows this work.
+**The combined headline (the number to lead with):**
 
-**Sensitivity table below still reflects the $25.6M occupancy-neutral ceiling (pre-elasticity) — superseded, kept for reference until Jai's recompute lands:**
+```
+Underpriced floor (segmented)     +$8.27M
+Overpriced floor (measured)       −$0.70M
+─────────────────────────────────────────
+COMBINED HOST GBV                 +$7.57M / year
+× 15.5% Airbnb take               +$1.17M / year  ← the headline
++ Nights unlocked                 +77,606 nights / year
+```
+
+Every input here is either measured (−0.916) or a mathematical certainty (−1.0 breakeven / β=0 for insignificant monthly) — nothing invented. This **replaces** the earlier $9.6M–$25.6M range as the number the deck leads with.
+
+**Clarified 7/29 (Jai):** the segmentation math (142-review split, underpriced/overpriced bands, combined headline) was never a second modeling step — it's presentation-layer business arithmetic applied to the already-verified, already-committed elasticity coefficient (`elasticity_model.py` and its outputs are real and in the repo). No script is owed here the way one was for the regression itself. **What's still needed:** the calculation steps (segment counts, per-band figures) should be laid out transparently in Brendan's appendix so a grader can check the arithmetic by hand — normal practice for a business case, distinct from the modeling work. **Owner: Brendan**, as part of appendix assembly.
+
+**Sensitivity table below is now stale — replaced by the segmented ROI table in Section 5:**
 
 | Adoption | Host revenue lift | Airbnb's cut (15.5%) | Year-1 net (after build) | Payback |
 |---|---|---|---|---|
@@ -129,9 +160,7 @@ An email from the faculty (7/24) makes clear the actual presentation context is 
 | 75% | $19.2M | $2.98M | $2.68M | 1.2 months |
 | 100% | $25.6M | $3.97M | $3.67M | 0.9 months |
 
-**Flag for the team:** this table is now superseded by the elasticity-adjusted range above — even the most conservative case (15% adoption) paying back in under 6 months was true on the $25.6M ceiling, but the honest floor is $9.6M, which roughly doubles every payback figure in this table. Don't present these payback numbers as-is until Jai's recompute lands.
-
-**Open items:** recompute this table on the $9.6M–$25.6M range (Jai); reconcile with whatever final adoption assumption the team wants to lead with on the Financial Case slides (Section 7, Slides 10-11).
+**Open items:** team sign-off on the overpriced-reframing above; commit Jai's segmentation math to the repo as a script; fold the combined $7.57M/$1.17M headline into Script v2 (Wed 7/29) and Deck v2 (Thu 7/30).
 
 ---
 
@@ -171,42 +200,51 @@ An email from the faculty (7/24) makes clear the actual presentation context is 
 
 **Open items:** decide "cost if built new" vs. "marginal cost to Airbnb" framing (some infra likely already exists on Airbnb's platform) — worth a one-line acknowledgment either way.
 
-**Flagged by Jai (7/24), not yet actioned — Jai to own:** the $190K/$105K figures above are "cost if built standalone." Airbnb almost certainly already has model-serving infra, A/B testing pipelines, and pricing-feature engineering in place, so the real *incremental* cost of adding this feature is likely closer to **$50-80K in engineering time** (Jai's estimate, not externally sourced). Using the standalone figure overstates cost and therefore understates ROI. If this gets incorporated, it should run as a second scenario alongside the $190K greenfield build, not a replacement, since the greenfield number has real sourced benchmarks behind it — and Sections 5 and 6's ROI/payback tables would need a second column to match.
+**✅ DONE (7/29): Jai formalized the incremental-cost scenario flagged 7/24.** The $180-200K/$95-105K figures above are "cost if built standalone" — the real number for an internal Airbnb pitch is the *marginal* cost to add this feature on top of infrastructure Airbnb already owns (model-serving, A/B testing, pricing-feature engineering — Smart Pricing already exists).
+
+**Incremental cost basis (the number the ROI is now built on):**
+- **One-time build:** ~$65K in engineering time (midpoint of $50-80K, Jai's estimate, not externally sourced) + under $1K in AI dev-tooling costs (Claude Code/Cursor/API usage during the ~4-month build — itemized for honesty, rounds to noise either way).
+- **Annual run:** ~$30K/yr — ~0.1 FTE DS for retraining/monitoring plus ~$3K/yr incremental infra (compute, database, hosting, monitoring — all marginal load on Airbnb's existing stack).
+- **5-year total:** $65K + ($30K × 5) = **~$215K** (vs. $715K on the standalone/greenfield basis).
+
+**Keep the standalone $190K/$715K figures as the explicit "worst-case if built from scratch" check** — they have real sourced comp benchmarks behind them and are worth naming once so the incremental number doesn't look cherry-picked, but the $65K/$30K incremental basis is what Sections 5-6's ROI/payback tables now run on.
 
 ---
 
 ## 5. ROI
 
-**⚠️ Superseded by the elasticity finding in Section 3 (7/27) — the table below is built on the flat $25.6M occupancy-neutral ceiling, not the real $9.6M–$25.6M range.** Don't present as-is; needs Jai's recompute (also still owes the NPV-discounting fix flagged below).
+**✅ DONE (7/29): Jai's recompute, on the segmented $1.17M/yr headline (Section 3) and the incremental $65K/$30K cost basis (Section 4), with NPV discounting actioned.**
 
 Using NPV/IRR/Payback methodology, flat steady-state adoption (Section 6 has the more realistic ramped version).
 
-**5-year net revenue and ROI, by adoption (build $190K + $105K/yr run = $715K total 5-yr cost), GBM base:**
+**5-year ROI by adoption ($1.17M @ 100% adoption, incremental cost $65K build + $30K/yr run):**
 
-| Adoption | 5-yr Airbnb revenue | 5-yr net revenue | 5-yr ROI | Payback |
-|---|---|---|---|---|
-| 15% | $2.98M | $2.26M | 316% | 5.9 months |
-| 25% | $4.96M | $4.24M | 594% | 3.6 months |
-| 35% | $6.94M | $6.23M | 871% | 2.5 months |
-| 50% | $9.92M | $9.20M | 1,287% | 1.8 months |
-| 75% | $14.88M | $14.16M | 1,981% | 1.2 months |
-| 100% | $19.84M | $19.12M | 2,675% | 0.9 months |
+| Adoption | Airbnb Rev/yr | 5-yr Rev (nom) | 5-yr Net (nom) | 5-yr Net (NPV @10%) | 5-yr ROI (nom) | Payback |
+|---|---|---|---|---|---|---|
+| 15% | $176K | $0.88M | $0.66M | $0.49M | 308% | ~6 mo |
+| 25% | $292K | $1.46M | $1.25M | $0.93M | 580% | ~4 mo |
+| 35% | $410K | $2.05M | $1.83M | $1.37M | 852% | ~3 mo |
+| 50% | $585K | $2.92M | $2.71M | $2.04M | 1,260% | ~2 mo |
+| 75% | $878K | $4.39M | $4.17M | $3.15M | 1,941% | ~1 mo |
+| 100% | $1.17M | $5.85M | $5.63M | $4.26M | 2,621% | ~1 mo |
 
-**Recommendation:** lead with the 25% and 50% rows as "conservative" and "expected" cases; don't headline the 100% row, it invites the obvious adoption-skepticism pushback.
+**Recommendation: lead with the 25% and 35% rows** as the conservative and expected cases. On the incremental cost basis, even 15% adoption pays back in ~6 months and clears 300% ROI. Don't headline the 100% row — it invites the obvious adoption-skepticism pushback.
+
+**For context — the occupancy-neutral ceiling ($4.15M @ 100%) produces multiples of these figures.** Show it as upside context if asked, not the headline.
+
+**Why the ROI story holds even though the revenue number dropped:** the incremental cost basis ($65K/$30K) is small enough that the ROI/payback story is nearly insensitive to which revenue figure is used — even the most conservative adoption row clears "fund it" by a wide margin. That's a structural strength of the pitch, worth saying explicitly if a professor pushes on the exact size of the revenue number.
 
 **Open items:** none blocking — this table is a flat-adoption simplification; Section 6 has the year-by-year ramped version, which is the one to actually present.
-
-**Flagged by Jai (7/24), not yet actioned — Jai to own:** the "5-yr net revenue" figures above are nominal sums, a dollar in Year 5 is treated the same as a dollar today. That's inconsistent with naming NPV as the methodology at the top of this section without actually discounting anything. Jai's read: a proper NPV at a modest 10% discount rate would reduce these numbers somewhat, not enough to hurt the story, but worth doing for a technically rigorous audience (and for internal consistency with Section 4's cited methodology). Applies to Section 6's year-by-year cash flows too, same issue there.
 
 ---
 
 ## 6. Financial Timeline
 
-**⚠️ Superseded by the elasticity finding in Section 3 (7/27) — the $3.97M/yr ceiling below is derived from the $25.6M occupancy-neutral figure. The adoption-ramp percentages themselves are unaffected (not model-dependent), but the dollar figures need Jai's recompute against the $9.6M–$25.6M range.**
+**✅ DONE (7/29): Jai's recompute on the segmented $1.17M/yr headline and incremental cost basis, with NPV discounting.** Adoption-ramp framework and percentages are unchanged from the original version — only the dollar figures and cost basis are new.
 
 Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (best fit: opt-in tool, individually-deciding hosts, word-of-mouth diffusion — not a mandated enterprise rollout). Bass diffusion model's classical parameters (Sultan/Farley/Lehmann 1990) are calibrated for 10-15+ year durable-goods adoption, too slow for a digital tool — recalibrated instead to real SaaS feature-adoption benchmarks (Product Metrics Benchmark Report 2024, 181 companies: avg 24.5%, median 16.5%, top quartile >45%).
 
-**Adoption ramp used:**
+**Adoption ramp used (unchanged):**
 
 | Year | Cumulative adoption | Basis |
 |---|---|---|
@@ -215,19 +253,25 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 | 3 | ~38% | Extrapolated, crossing into early-majority |
 | 4+ (steady state) | ~42% | Anchored just under real SaaS top-quartile benchmark — deliberately not near 100% |
 
-**Year-by-year timeline (on the $3.97M/yr Airbnb-revenue ceiling at 100% adoption, GBM base; build $190K Year 1 + $105K/yr run cost every year):**
+**Why 10%?** (NPV discount rate) Standard corporate rate for a moderate-risk internal project, per Corporate Finance Institute — same source as the payback methodology. Not aggressive (would understate the case), not zero (would be dishonest given NPV is the named methodology).
 
-| Year | Adoption | Airbnb revenue | Cost | Net cash flow | Cumulative |
-|---|---|---|---|---|---|
-| 1 | 10% | $397K | $295K | $102K | $0.10M |
-| 2 | 24% | $952K | $105K | $847K | $0.95M |
-| 3 | 38% | $1.51M | $105K | $1.40M | $2.35M |
-| 4 | 42% | $1.67M | $105K | $1.56M | $3.91M |
-| 5 | 42% | $1.67M | $105K | $1.56M | $5.47M |
+**Year-by-year timeline — $1.17M/yr Airbnb fee at 100% adoption; incremental $65K build Year 1 + $30K/yr run, with NPV @10%:**
 
-**Payback: ~8.9 months into Year 1** (assumes roughly linear revenue accrual through the year) — this is the number to lead with over the flat-adoption sensitivity table, since it doesn't assume instant adoption.
+| Year | Adoption | Airbnb Revenue | Cost | Net (nom) | Cum (nom) | Net (NPV @10%) | Cum (NPV) |
+|---|---|---|---|---|---|---|---|
+| 1 | 10% | $117K | $95K | +$22K | +$22K | +$20K | +$20K |
+| 2 | 24% | $281K | $30K | +$251K | +$273K | +$207K | +$227K |
+| 3 | 38% | $445K | $30K | +$415K | +$687K | +$311K | +$539K |
+| 4 | 42% | $491K | $30K | +$461K | +$1.15M | +$315K | +$854K |
+| 5 | 42% | $491K | $30K | +$461K | +$1.61M | +$286K | +$1.14M |
+
+**Payback: net-positive in Year 1, both nominal and NPV.** On the incremental cost basis, even 10% first-year adoption ($117K revenue) covers the $95K Year-1 cost — no multi-year hole to climb out of, unlike the old $190K-standalone-cost version.
+
+**The NPV haircut is real but doesn't threaten the story:** 5-yr net revenue $5.63M nominal → $4.26M at 10% NPV (~24% haircut). Still net-positive Year 1, still returns many multiples of cost over five years.
 
 **Caveat for the slide:** no verified case study of an Airbnb-specific or directly comparable host/seller-tool adoption curve exists — this is a recalibration of general SaaS/diffusion benchmarks, not a directly analogous real-world number.
+
+**On the ceiling for comparison:** the same ramp on the $4.15M occupancy-neutral ceiling produces multiples of the cumulative NPV net above. Present the floor as the headline, the ceiling as upside if asked.
 
 **Open items:** none blocking.
 
@@ -250,8 +294,8 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 | 7 | Solution Statement | The product vs. Smart Pricing; Commander's Intent delivered verbally here | (supports business benefit / "how") | 1.5 min |
 | 8 | Model, Approach & Insights | GBM quantile regression + KNN comparables, tools, segment split, accuracy, and what the model found — merged | Model/approach + tools; insights and learnings | 2.5 min |
 | 9 | Recorded Demo | **Pre-recorded, narrated** video walkthrough of the dashboard (per faculty guidance — no live demo) | (supports "how" + insights) | 2 min |
-| 10 | Financial Case: Revenue Lift & Cost | Methodology (real data, trim, noise discount), cost (TCO framework) | Predictions/recommendations (partial) | 2 min |
-| 11 | Financial Case: ROI & Timeline | Payback, 5-year ROI, adoption ramp | Predictions/recommendations (partial) | 1.5 min |
+| 10 | Financial Case: Revenue Lift & Cost | ⚠️ **Dense subject, kept deliberately shallow (7/29) — see note below.** Two-pillar table only (underpriced = margin, overpriced = volume) with headline $ totals, the combined $7.57M→$1.17M number, and the incremental cost line ($65K build/$30K yr) | Predictions/recommendations (partial) | 2 min |
+| 11 | Financial Case: ROI & Timeline | 25%/35% adoption rows only, NPV-adjusted payback, adoption-ramp chart | Predictions/recommendations (partial) | 1.5 min |
 | 12 | Challenges & Caveats | Risks/assumptions, model-noise discount reasoning, known data gaps | Challenges/caveats/data mitigation | 1 min |
 | 13 | Recommendations, Next Steps & Close | The "so what," what the team would explore further, brief career/company relevance, memorable close — merged | Predictions/recommendations; next steps; relevance to career/company | 1.5 min |
 
@@ -260,6 +304,8 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 **Deliberately left out of this outline:** who presents which slide. That's for the team to work out on their own — no suggestions here.
 
 **⚠️ Slide 6 occupancy stat corrected 7/28.** The 71.5% (Small-Multi) vs. 47.3% (Individual) figure doesn't reproduce from the current dataset under any occupancy metric checked — likely a transcription error from the original EDA writeup (full reasoning in `README.md`). Verified current numbers show the *opposite* trend: **Individual 44.1%, Small-Multi 37.8%, Mid-Multi 32.6%, Enterprise 30.0%** — occupancy declines as host scale increases. This also means Slide 6's planned narrative needs to change: the story isn't "bigger operators occupy better," it's the reverse, and it arguably strengthens the pitch (individual hosts already have strong demand, so the product's job is purely about pricing that demand correctly, not fixing an occupancy problem that isn't real). Also worth checking Slide 6's other claim ("more established hosts have higher occupancy") — this holds for review count (real, monotonic: 33.6%→41.8% by quartile) but does *not* hold for host tenure/years-of-experience (flat ~37-39% across all quartiles) — don't conflate the two when rewriting.
+
+**⚠️ Slides 10-11 density strategy, decided 7/29.** Jai's revenue/cost/ROI work (Sections 3, 5, 6) is real and thorough, but far too dense for 3.5 minutes of slide time — putting the 142-review segmentation, the underpriced/overpriced band tables, the "revenue flip" mechanics, or the eleven-point "floor of the floor" defensive list on the actual slides would bury the message. **Slide content stays to headline numbers only** (the two-pillar table, the combined $7.57M→$1.17M figure, the incremental cost line, 25%/35% adoption rows, NPV-adjusted payback). **All the underlying mechanics — segmentation reasoning, floor/ceiling tables, NPV mechanics, year-by-year cash flow — go in the Q&A appendix**, not the timed slides. Manas should deliver Jai's closing one-liner verbally on Slide 10/11 ("$7.57M in new host earnings... that's the floor") rather than putting it as slide text — same spoken-delivery pattern as the Commander's Intent line on Slide 7.
 
 **Not yet done — real open items for Slide 7:**
 - Team to assign owners for each slide
@@ -328,9 +374,9 @@ Daily team meetings Monday-Friday, work starting Saturday. Structure: script and
 | **Sun 7/26** | ✅ *(work day, no meeting)* | — | Jai's elasticity pilot landed (Section 3) — the major deliverable from this work day. |
 | **Mon 7/27** | ✅ **Script v1 Review** | Script v1 | Done — see Section 8 for the reviewed status and fixes identified for v2. Q&A-timing question resolved 7/26 (see Section 0). |
 | **Tue 7/28** | ✅ **Deck v1 Review** | Deck v1 (13 slides, populated) | Done. UI branding: Francois's draft shared and approved (style only, not full content yet); tech pass still needed before Wed's gate. **Financial tables in Sections 3/5/6 still need Jai's elasticity recompute before Script/Deck v2.** |
-| **Wed 7/29** | **Script v2 Review** | Script v2 (folds in Jai's finalized numbers + Meeting 1/2 feedback) | **Gate: UI approved final** (tech + branding both done) unlocks demo recording. **Demo recording scheduled for Wed**, right after approval — on track. |
-| **Thu 7/30** | **Deck v2 Review** | Deck v2 (demo embedded, finalized financials, near-final repo cleanup) | **Due EOD Thursday, firm: Brendan's appendices, fully complete** — not just close, so the team has them in hand to review before Friday, not discovering gaps at v3 FINAL. Thursday 11:30am meeting with Jamie happens same day — prep open questions beforehand. |
-| **Fri 7/31** | **v3 FINAL** | Script v3 (FINAL), Deck v3 (FINAL), demo embedded, appendix (final since Thursday), repo cleaned and organized | Matches the team's existing ~Aug 1 target. This needs to be genuinely final — see residency note below. |
+| **Wed 7/29** | ❌ **CANCELLED** | — | Meeting didn't happen. The overpriced-framing decision it was meant to settle got resolved by the artifacts instead (see Section 3) — all deliverables landed on the combined $7.57M. No meeting with Stan either; he's on vacation, team updates him by email. |
+| **Thu 7/30** | ✅ **Demo recorded** | Demo raw footage | **Demo recorded 7/30. Jai editing as of 7/31 evening** — the biggest schedule risk is now closed, pending the edit. Francois's UI redo (v3 + real listing photos/logo) and the updated birds-eye also dated 7/30. |
+| **Fri 7/31** | **v3 FINAL — today** | Script v3, Deck v3, demo embedded, appendix, repo clean | See "still outstanding" list below for what's actually left as of 7pm Friday. Residency is Monday, so anything unfinished tonight travels with the team. |
 
 **Residency week (Aug 3-9, NYC) — 3 scheduled work sessions.** Goal: all three dedicated to rehearsal, not more building, if it can be avoided. That's only realistic if Friday's v3 is actually final, not "final unless something breaks" — worth stating explicitly when the team reviews Friday's deliverable, since it changes what "done" needs to mean by then.
 
@@ -341,15 +387,19 @@ Daily team meetings Monday-Friday, work starting Saturday. Structure: script and
 - **Sign-off rule:** none of the parent to-do items get marked done just because a draft exists here — needs the whole team's sign-off first.
 - **Scope:** NYC-only pilot, not platform-wide, per the README's positioning.
 - **Framing:** presenting from a hypothetical "we are Airbnb's internal product team" position, which is why real occupancy-response/elasticity data is assumed even though the actual dataset doesn't contain it. **Update 7/27: this is no longer entirely hypothetical for short-stay** — Jai's elasticity pilot measured a real (if narrow-sample) price-response coefficient. Frame it as proof-of-mechanism using proxy data, not as validation of the full model at Airbnb scale.
-- **Model version:** GBM quantile regression + KNN (v3) is current — supersedes the earlier Ridge model referenced in some older repo docs. The GBM code, updated pricing-signal outputs, and demo UI prototypes currently live on the `final-model-package` branch, **still not merged into `main` as of 7/28.**
-- **⚠️ RISK — do not merge `origin/jai` carelessly:** that branch diffs ~120K lines of deletions against `main` (would wipe `scraper-poc/`, the seasonality PoC, and both planning docs). Looks like a stale personal fork that never rebased. Flag to Jai directly before repo cleanup starts.
+- **Model version:** GBM quantile regression + KNN (v3) is current, now living in **`model v4/`** on `main` — Jai merged `final-model-package` and renamed it to match the v1/v2/v3 folder convention (7/28-29). No longer an unmerged-branch problem. Root `README.md` and `model v4/README.md` both mark V4 current with a version-progression table.
+- **✅ CORRECTED 7/31 — the `origin/jai` "risk" was a misread, there is no danger.** Verified with `git merge-base --is-ancestor`: `origin/jai` is **fully contained in `main`** (last commit 7/17; `main` is 25 commits ahead). Merging it would be a no-op that brings in nothing. The alarming "283K lines of deletions" figure came from running `git diff main origin/jai`, which shows what you'd lose stepping *backward* to a July 17 snapshot — not what a merge does. Earlier notes in this document called it dangerous; that was wrong. It's simply stale, and safe to delete whenever.
+- **Real branch finding (7/31):** `origin/v3-confidence-fix-and-seasonality` is the **only** branch carrying unmerged work — it holds the entire `model v3/` directory (Manas's v3 package, confidence-score fix, v3 seasonality). The root README's version-progression table links to `model v3/`, which does not exist on `main`, so that link currently goes nowhere for a grader and the v1→v2→v3→v4 narrative the technical appendix tells has a gap in `main`. **Decision needed:** merge the branch to restore `model v3/`, or leave it and keep the README pointing at the branch.
 - **⚠️ EDA correction (7/28):** the README's/Data Cleaning Process's host-tier occupancy-gap stat (71.5%/47.3%) doesn't reproduce and is likely a transcription error — see the correction notes in both files and in Section 7 (Slide 6) above. Verified numbers show occupancy *declining* with host scale, the opposite of the original claim. This hasn't propagated into the script or deck yet — keep it that way by using the corrected numbers if it comes up.
+- **Repo access:** Jai, Brendan, Francois confirmed as collaborators (verified via API 7/29). **Manas and Rachael are genuinely not on the repo** — not a visibility issue, confirmed via the repo's public API. Jai needs to send real invites.
 - **Ownership:** see Section 10 above for current status as of 7/28.
 
-### What's genuinely still outstanding (7/28 snapshot)
-- Jai: push elasticity work to repo; NPV-discounting + marginal-cost scenarios; recompute Sections 3/5/6's tables on the $9.6M–$25.6M range; repo cleanup (mind the `origin/jai` risk above); merge or otherwise resolve `final-model-package`.
-- Team: decide whether Sections 5/6 lead with the conservative floor, the ceiling, or the full range.
-- Manas/Francois/Rachael: Script v2 + Deck v2, folding in the elasticity numbers once Jai's recompute lands, plus the Script v1 fixes in Section 8.
-- Francois: UI tech pass, ahead of Wednesday's approval gate.
-- Brendan: appendix assembly (structure agreed, in progress) and the separate anticipated-questions quick-reference doc.
-- Everyone: Manas and Rachael still need repo access from Jai.
+### What's genuinely still outstanding (7/31, 7pm — v3 FINAL day, NYC Monday)
+
+- **⚠️ REPO IS TWO DAYS STALE — biggest gap.** `main` hasn't moved since 7/29 (`bcba89f`). The repo is a graded, faculty-facing deliverable and it currently ships: UI **v2** (7/28) instead of Francois's **v3** (7/30), a birds-eye missing its three new current-model screens, **no `assets/` folder at all** (so the pages break on images), and none of the demo package docs (`UI_Script.md`, `BIRDSEYE_SCREENS.md`, demo `README.md`). All of it exists in Jai's 7/31 zip, just unpushed. **Owner: Brendan, tonight.**
+- **⚠️ Contradictory financial doc in circulation.** Jai's 7/31 zip includes `revenue_lift_roi.md` (his master doc, timestamped 7/29 14:03) alongside the two later "journey" docs (16:01, 16:41). The older doc uses the **greenfield** cost basis ($190K build + $105K/yr), which puts Year 1 at **−$178K** and payback at **mid-Year-2** — against the deck/UI-script's **incremental** basis ($65K/$30K), Year-1 positive, **~3-month** payback at 35% adoption. Revenue figures agree across all docs; only cost differs, and it swings payback from 3 months to 8. Don't commit that doc unmarked. Its Sections 5/5b reasoning is the best in the stack and belongs in the appendix; only its Section 6 is stale.
+- **Deck language cleanup:** Slide 8, Appendix A5 label, and the scripted Q&A answer still say overpriced is excluded, contradicting the combined number they sit beside (Section 3). **Owner: Francois.**
+- **Cost-basis defensibility, worth having an answer ready:** the deck leads with the incremental $65K/$30K, which is Jai's own estimate and *not* externally sourced, while the $190K greenfield figure *does* have Glassdoor benchmarks behind it. Leading with the unsourced number produces the better ROI. That's the likeliest place a sharp grader pushes. The honest answer: Airbnb demonstrably already owns model-serving, pricing, and A/B infrastructure (Smart Pricing ships today), so greenfield overstates the real marginal cost — and the greenfield number is shown alongside precisely so the comparison is visible rather than hidden.
+- **Demo:** recorded 7/30, Jai editing as of 7/31 evening. Needs to land and get embedded.
+- **Brendan: appendix** — was due EOD 7/30. Pull Jai's Option A/B framing, the four-scenario overpriced band, and the "99.3% of underpriced short-stay listings sit below the 142-review panel profile" argument (the strongest defensive point in the project, and the reason the old $9.6M was never a real floor).
+- **Repo access:** Manas and Rachael still unverified as collaborators. **Owner: Jai.**

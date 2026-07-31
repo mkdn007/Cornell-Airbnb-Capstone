@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>Your Pricing Diagnostic — Interactive Prototype</title>
+<style>
+  /* Locked to light: white + Airbnb red, ignores OS dark mode. */
+  :root {
+    color-scheme: light only;
+
+    /* Airbnb brand palette */
+    --rausch: #FF385C;          /* primary brand (Rausch) */
+    --rausch-dark: #E31C5F;     /* gradient mid */
+    --rausch-deep: #BD1E59;     /* gradient end */
+    --brand: #E31C5F;           /* accent used for markers/links */
+    --brand-soft: #FFE8EC;      /* tinted brand background */
+    --brand-grad: linear-gradient(115deg, #E61E4D 0%, #E31C5F 45%, #BD1E59 100%);
+
+    --ink: #222222;
+    --paper: #ffffff;
+    --paper-soft: #f7f7f7;
+    --line: #ebebeb;
+    --text: #222222;
+    --text-dim: #717171;
+
+    --data: #222222;            /* neutral figures render in near-black */
+    --data-soft: #f2f2f2;
+    --good: #008a05;            /* Airbnb positive green */
+    --good-bg: #e8f6e9;
+    --caution: #C13515;         /* Airbnb error/warning red-orange */
+    --caution-bg: #fdeae4;
+    --neutral: #b07a00;
+    --neutral-bg: #fbf3e0;
+    --shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 16px rgba(0,0,0,.08);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--text); }
+  body {
+    font-family: "Airbnb Cereal App", "Circular", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 0 34px 46px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  .serif { font-family: inherit; }
+  .mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+  /* ---- Airbnb.com-style top navigation ---- */
+  .site-nav { background: #fff; border-bottom: 1px solid var(--line); margin: 0 -34px; padding: 14px 34px; }
+  .site-nav-inner { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .logo { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; flex-shrink: 0; }
+  .logo .belo-icon { height: 34px; width: 34px; display: block; border-radius: 8px; object-fit: cover; }
+  .logo .logo-word { color: var(--rausch); font-size: 25px; font-weight: 800; letter-spacing: -.04em; }
+
+  .search-pill {
+    display: flex; align-items: center;
+    border: 1px solid var(--line); border-radius: 40px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 3px 10px rgba(0,0,0,.07);
+    padding: 5px 5px 5px 20px; font-size: 14px; font-weight: 600;
+  }
+  .search-pill .sp-seg { padding: 0 16px; color: var(--text); white-space: nowrap; }
+  .search-pill .sp-seg.dim { color: var(--text-dim); font-weight: 500; }
+  .search-pill .sp-div { width: 1px; height: 24px; background: var(--line); }
+  .search-pill .sp-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--rausch); display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; }
+  .search-pill .sp-btn svg { width: 14px; height: 14px; fill: #fff; }
+
+  .nav-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .nav-right .host-link { font-size: 14px; font-weight: 600; color: var(--text); padding: 10px 14px; border-radius: 22px; text-decoration: none; }
+  .nav-right .host-link:hover { background: var(--paper-soft); }
+  .nav-right .host-link.welcome { color: var(--text); cursor: default; }
+  .nav-right .host-link.welcome:hover { background: transparent; }
+  .nav-right .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%; background: #fff; color: var(--text); cursor: pointer; }
+  .nav-right .icon-btn:hover { box-shadow: var(--shadow); }
+  .nav-right .icon-btn svg { width: 16px; height: 16px; }
+
+  /* ---- Airbnb-style filter chip row (doubles as section nav) ---- */
+  .filter-chips { display: flex; align-items: center; gap: 12px; overflow-x: auto; padding: 16px 0 18px; margin: 0 0 22px; border-bottom: 1px solid var(--line); }
+  .filter-chips .chip { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; border: 1px solid var(--line); border-radius: 24px; padding: 9px 16px; font-size: 13px; font-weight: 600; color: var(--text); background: #fff; cursor: pointer; text-decoration: none; }
+  .filter-chips .chip:hover { border-color: var(--text); }
+  .filter-chips .chip.active { border-color: var(--text); background: var(--paper-soft); }
+  .filter-chips .chip.static { cursor: default; color: var(--text-dim); }
+  .filter-chips .chip.static:hover { border-color: var(--line); }
+
+  .top-row { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+  .demo-flag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700;
+    color: var(--text-dim); border: 1px solid var(--line); padding: 3px 9px; border-radius: 20px;
+  }
+  .demo-flag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
+
+  .listing-switcher { display: flex; align-items: center; gap: 8px; }
+  .listing-switcher label { font-size: 11.5px; font-weight: 600; color: var(--text-dim); }
+  #listing-select {
+    font: inherit; font-size: 13.5px; font-weight: 600; padding: 7px 10px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--paper-soft); color: var(--text); cursor: pointer;
+  }
+
+  header.host-head {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 24px;
+  }
+  .hero-photo {
+    width: 100%; height: 260px; border-radius: var(--radius); overflow: hidden;
+    margin-bottom: 18px; box-shadow: var(--shadow); position: relative; background: var(--paper-soft);
+  }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero-photo .hero-caption {
+    position: absolute; left: 0; bottom: 0; right: 0;
+    padding: 26px 18px 12px; color: #fff; font-size: 11.5px; font-weight: 500;
+    background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0));
+  }
+  .host-head h1 { font-size: 25px; margin: 0 0 6px; font-weight: 600; text-wrap: balance; }
+  .host-head .meta { color: var(--text-dim); font-size: 13.5px; }
+  .badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .badge {
+    font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+    background: var(--paper-soft); border: 1px solid var(--line); color: var(--text-dim);
+  }
+  .badge.segment { background: var(--brand-soft); color: var(--brand); border-color: transparent; }
+
+  .panel { background: var(--paper-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); margin-bottom: 20px; }
+  .panel h2 { font-size: 15px; margin: 0 0 4px; font-weight: 700; }
+  .panel .panel-sub { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
+
+  .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row .stat-label { font-size: 13.5px; color: var(--text); }
+  .stat-row .stat-value { font-size: 15px; font-weight: 700; color: var(--data); }
+  .occ-unavailable { font-size: 12.5px; color: var(--text-dim); background: var(--paper); border: 1px dashed var(--line); border-radius: 8px; padding: 11px 13px; line-height: 1.5; }
+  .occ-unavailable strong { color: var(--text); }
+
+  .amenity-chip {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--caution-bg); color: var(--caution);
+    font-size: 12.5px; font-weight: 600; padding: 5px 11px; border-radius: 20px; margin: 4px 6px 0 0;
+  }
+  .peer-note { margin-top: 14px; font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+
+  #hist-wrap { position: relative; height: 92px; margin-bottom: 6px; }
+  #hist-svg { width: 100%; height: 100%; display: block; }
+  .hist-bar { fill: var(--rausch); fill-opacity: .28; }
+  .marker-line { stroke: var(--brand); stroke-width: 2.5; }
+  .marker-label {
+    position: absolute; top: -4px; transform: translateX(-50%);
+    font-size: 12px; font-weight: 700; color: var(--brand); background: var(--paper-soft);
+    padding: 1px 6px; border-radius: 6px; white-space: nowrap;
+  }
+  .hist-axis-label { font-size: 10px; fill: var(--text-dim); }
+  #percentile-readout { font-size: 14px; color: var(--text); margin-top: 4px; }
+  #percentile-readout strong { color: var(--brand); }
+
+  .optimal-callout {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    background: var(--good-bg); border: 1px solid var(--good); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 14px;
+  }
+  .optimal-callout .oc-text { font-size: 14px; color: var(--text); }
+  .optimal-callout .oc-text strong { color: var(--good); font-size: 17px; }
+  .optimal-callout .oc-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+  .optimal-callout .oc-panel-note { font-size: 13px; color: var(--text); font-weight: 600; margin-top: 10px; line-height: 1.5; }
+  .optimal-callout .oc-panel-note strong { font-weight: 800; }
+  .optimal-callout .oc-panel-note .hl-gain { color: var(--good); background: var(--good-bg); font-weight: 800; padding: 1px 5px; border-radius: 4px; }
+  .optimal-callout .oc-panel-note .hl-note { color: var(--brand); font-weight: 800; }
+  .optimal-callout.uncertain-callout { background: var(--neutral-bg); border-color: var(--neutral); }
+  .optimal-callout.uncertain-callout .oc-text strong { color: var(--neutral); }
+
+  .price-tool { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 16px 0; }
+  .price-tool label { font-size: 12px; color: var(--text-dim); font-weight: 600; }
+  #price-input {
+    font: inherit; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;
+    width: 140px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--paper); color: var(--text);
+  }
+  #price-slider { flex: 1; min-width: 180px; accent-color: var(--rausch); }
+  .quick-btn {
+    font: inherit; font-size: 12.5px; font-weight: 600; padding: 8px 14px; border-radius: 10px;
+    border: 1px solid var(--ink); background: var(--paper); color: var(--text); cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .quick-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  #btn-optimal {
+    border: none; background: var(--brand-grad); color: #fff;
+  }
+  #btn-optimal:hover { filter: brightness(1.05); }
+  #unit-equiv { font-size: 13px; color: var(--text-dim); min-height: 18px; }
+  #unit-equiv strong { color: var(--text); }
+
+  .month-summary { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; }
+  .month-summary .metric { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; flex: 1; min-width: 140px; }
+  .month-summary .metric .label { font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+  .month-summary .metric .value { font-size: 20px; font-weight: 700; }
+
+  table.year-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  table.year-table th, table.year-table td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--line); }
+  table.year-table th:first-child, table.year-table td:first-child { text-align: left; }
+  table.year-table th { font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--text-dim); font-weight: 600; }
+  table.year-table td.mono, table.year-table th { font-variant-numeric: tabular-nums; }
+  table.year-table tr.flagged td { color: var(--caution); }
+  table.year-table tr.total td { font-weight: 700; border-top: 2px solid var(--text); border-bottom: none; padding-top: 10px; }
+  .flag-note { font-size: 11px; color: var(--caution); }
+
+  .illustrative-note {
+    margin-top: 14px; font-size: 11.5px; color: var(--brand); background: var(--brand-soft);
+    border-radius: 8px; padding: 8px 12px; line-height: 1.5;
+  }
+
+  footer.host-foot { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+
+  @media (max-width: 880px) {
+    .grid-two { grid-template-columns: 1fr; }
+    table.year-table { font-size: 11.5px; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="logo" href="#" aria-label="Airbnb">
+      <img class="belo-icon" src="assets/airbnb-belo.jpg" alt="Airbnb">
+      <span class="logo-word">airbnb</span>
+    </a>
+    <div class="search-pill">
+      <span class="sp-seg">Host Pricing Diagnostic</span>
+      <span class="sp-div"></span>
+      <span class="sp-seg dim">NYC market</span>
+      <span class="sp-div"></span>
+      <span class="sp-seg dim">June 2026</span>
+      <span class="sp-btn" aria-hidden="true">
+        <svg viewBox="0 0 512 512"><path d="M508 468L387 347a208 208 0 10-40 40l121 121a28 28 0 0040-40zM72 208a136 136 0 11272 0 136 136 0 01-272 0z"/></svg>
+      </span>
+    </div>
+    <div class="nav-right">
+      <span class="host-link welcome">Welcome back, Maya</span>
+      <button class="icon-btn" aria-label="Language">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3z"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="filter-chips">
+    <span class="chip static">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:2px;"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+      Property pricing tool
+    </span>
+    <a class="chip" href="nyc_pricing_overview_gbm.html">Birds-eye view</a>
+    <span class="chip static">Underpriced</span>
+    <span class="chip static">Overpriced</span>
+    <span class="chip static">Monthly rentals</span>
+    <span class="chip static">Elasticity examples</span>
+  </div>
+
+  <div class="top-row">
+    <div class="demo-flag"><span class="dot"></span>Interactive prototype, real listing &amp; peer data (data reflects June 2026)</div>
+    <div class="listing-switcher">
+      <label for="listing-select">Demo property</label>
+      <select id="listing-select">
+        <option value="shortstay">Large Private Midtown Room! (short-stay, confident: raise)</option>
+        <option value="blueroom">The Blue Room by Prospect Park (short-stay, confident: lower)</option>
+        <option value="monthly">Charming Central Park Studio (monthly, confident: raise)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="hero-photo" id="hero-photo">
+    <img id="hero-img" alt="">
+    <div class="hero-caption">Representative interior — illustrative stock photo, not the actual listing</div>
+  </div>
+
+  <header class="host-head">
+    <div>
+      <h1 class="serif" id="listing-name"></h1>
+      <div class="meta" id="listing-meta"></div>
+      <div class="badges" id="listing-badges"></div>
+    </div>
+  </header>
+
+  <section class="panel">
+    <h2>Where you stand this month</h2>
+    <div class="panel-sub" id="hist-sub"></div>
+    <div id="hist-wrap">
+      <svg id="hist-svg"></svg>
+      <div id="marker-label" class="marker-label"></div>
+    </div>
+    <div id="percentile-readout"></div>
+  </section>
+
+  <section class="grid-two">
+    <div class="panel" style="margin-bottom:0;">
+      <h2>Why the model flags this listing</h2>
+      <div class="panel-sub" id="why-sub"></div>
+      <div id="why-signal-rows">
+        <div class="stat-row"><span class="stat-label">Your price</span><span class="stat-value" id="sig-price"></span></div>
+        <div class="stat-row"><span class="stat-label">Model fair value</span><span class="stat-value" id="sig-fair"></span></div>
+        <div class="stat-row"><span class="stat-label">Calibrated range (q10&ndash;q90)</span><span class="stat-value" id="sig-range"></span></div>
+        <div class="stat-row"><span class="stat-label" id="sig-occ-label">Your occupancy</span><span class="stat-value" id="sig-occ"></span></div>
+        <div class="stat-row"><span class="stat-label">Model direction</span><span class="stat-value" id="sig-conf"></span></div>
+      </div>
+      <p class="peer-note" id="why-note"></p>
+    </div>
+
+    <div class="panel" style="margin-bottom:0;">
+      <h2>What high performers have that you don't</h2>
+      <div class="panel-sub">Amenities present in 60%+ of your top-performing peer group</div>
+      <div id="amenity-chips"></div>
+      <p class="peer-note" id="amenity-note"></p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Try a different price</h2>
+    <div class="panel-sub" id="price-tool-sub"></div>
+    <div id="optimal-callout" class="optimal-callout"></div>
+    <div class="price-tool">
+      <label for="price-input" id="price-input-label">Price</label>
+      <span class="mono" style="font-size:20px;">$</span>
+      <input type="number" id="price-input">
+      <input type="range" id="price-slider">
+      <button class="quick-btn" id="btn-current"></button>
+      <button class="quick-btn" id="btn-fair"></button>
+    </div>
+    <div id="unit-equiv"></div>
+    <div class="month-summary">
+      <div class="metric"><div class="label">Percentile vs. peers</div><div class="value" id="m-percentile">&ndash;</div></div>
+      <div class="metric"><div class="label">Expected occupancy (annual avg)</div><div class="value" id="m-occ">&ndash;</div></div>
+      <div class="metric"><div class="label">Expected annual revenue</div><div class="value mono" id="m-annual-revenue">&ndash;</div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>That price across the year</h2>
+    <div class="panel-sub" id="year-sub"></div>
+    <div style="overflow-x:auto;">
+      <table class="year-table" id="year-table"></table>
+    </div>
+    <div class="illustrative-note" id="flagged-note"></div>
+    <div class="illustrative-note" id="calendar-caveat" style="display:none;"></div>
+    <div class="illustrative-note" id="gap-note" style="display:none;"></div>
+  </section>
+
+  <footer class="host-foot">
+    <span id="footer-listing"></span>
+    <span class="mono">Prototype build, not a shipped product</span>
+  </footer>
+</div>
+
+<script>
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DAYS_IN_MONTH = {Jan:31,Feb:28,Mar:31,Apr:30,May:31,Jun:30,Jul:31,Aug:31,Sep:30,Oct:31,Nov:30,Dec:31};
+
+// ---- Per-listing config: everything that differs between a short-stay
+// and a monthly-rental listing lives here, the rendering code below reads
+// from whichever one is ACTIVE, nothing is hardcoded to one listing type. ----
+const LISTINGS = {
+  shortstay: {
+    name: "Large Private Midtown Room!",
+    meta: "Private room in rental unit &middot; Hell's Kitchen, Manhattan &middot; Short-stay",
+    segmentBadge: null,
+    badges: ["Individual host", "Superhost", "4.9 rating &middot; 281 reviews"],
+    footerListing: "Listing #343276 &middot; real exact-cohort peer prices (n=142, Manhattan | Private room | small | short_stay | Individual) &amp; real 12-month calendar occupancy &middot; GBM fair-value $335.67",
+    heroImage: "assets/listing-midtown.jpg",
+    peerCount: 142,
+    // Real exact-cohort peer prices from active_listings_clean_v6:
+    // cohort key "Manhattan | Private room | small | short_stay | Individual"
+    peerPrices: [90,103,109,119,126,127,128,132,133,137,138,139,142,143,146,146,148,149,149,149,150,152,155,156,158,159,160,160,160,166,171,171,180,181,185,186,186,186,186,188,190,192,194,198,202,202,205,205,207,208,211,211,212,213,217,220,220,221,223,227,230,230,231,232,234,235,242,243,244,246,246,247,250,251,256,257,257,266,269,274,274,275,277,278,281,284,285,286,287,295,296,297,300,300,304,305,308,311,314,323,326,327,327,328,328,336,336,342,343,348,360,361,365,366,369,371,371,374,376,379,389,395,399,408,422,436,489,504,516,529,534,557,576,616,627,628,675,690,704,729,856,983],
+    // Real month-by-month occupancy from past_12mo_calendar.csv
+    // (reserved_days / (reserved_days + vacant_days) per month)
+    realOcc: {Jan:0.8710,Feb:0.6429,Mar:0.9677,Apr:0.5667,May:0.7419,Jun:0.9333,Jul:0.8710,Aug:0.6774,Sep:0.9333,Oct:1.0000,Nov:0.7333,Dec:0.8387},
+    seasonIdx: {Jan:0.8359,Feb:0.824,Mar:0.9325,Apr:0.9962,May:1.0528,Jun:1.0313,Jul:0.9449,Aug:0.926,Sep:1.1543,Oct:1.1149,Nov:1.0663,Dec:1.1208},
+    currentPrice: 200, fairEstimate: 336,
+    q10Nightly: 212.12, q90Nightly: 440.17, dirLabel: "Confident: raise price", confScore: 73.9,
+    // Current model: occupancy responds to price via the measured short-stay
+    // elasticity, applied multiplicatively (occ x (price/current)^beta), the
+    // same way the revenue_lift_roi worked examples do. 281 reviews >= the
+    // 142-review panel median -> beta = -0.92 (measured pilot value).
+    reviews: 281, beta: -0.92, betaBasis: "measured",
+    flaggedMonths: [],
+    flaggedNote: "Occupancy data is real &mdash; this listing is in the AirROI pilot panel (300 listings with a full 12-month calendar, Jul 2025 &ndash; Jun 2026): reserved and vacant days per month, not an estimate.",
+    unitMultiplier: 1,
+    unitLabel: "Nightly price",
+    inputMin: 50, inputMax: 1000, inputStep: 1, sliderMax: 700,
+    occUnavailable: "<strong>No reliable peer-occupancy benchmark for this cohort.</strong> Only 7 of the 142 peers have real calendar data &mdash; too thin to compute a meaningful high-performer occupancy gap. The active-listings occupancy_rate field is saturated at 255 for most peers. The price signal is robust (GBM: Confident: raise, score 73.9, interval [$212, $440], actual $200 is at the 31st percentile of 142 real peers); occupancy is already high at 81% annually from the real calendar data below.",
+    whyOccupancy: "298 days", whyPeerOccupancy: "n/a", whyGapText: "", whyGapColor: "",
+    whyNote: "142 comparable peers matched on host tier, room type, size &amp; segment. At the 31st percentile of peer prices with 81% real annual occupancy and 281 reviews, the underpricing is a pure pricing decision — this listing is already performing well on occupancy; raising to fair value ($336) is the lever.",
+    amenities: ["Kitchen", "Iron", "Dishes &amp; silverware", "Microwave", "Cooking basics", "Self check-in"],
+    amenityNote: "Six gaps vs. high performers, mostly kitchen-related. Worth addressing independently of price — closing these could support pricing even above the model's fair-value estimate.",
+  },
+  blueroom: {
+    name: "The Blue Room by Prospect Park",
+    meta: "Private room in townhouse &middot; Prospect-Lefferts Gardens, Brooklyn &middot; Short-stay",
+    segmentBadge: null,
+    badges: ["Small-Multi host", "Superhost", "117 reviews"],
+    footerListing: "Listing #848718 &middot; real exact-cohort peer prices (n=276, Brooklyn | Private room | small | short_stay | Small-Multi) &amp; real 12-month calendar occupancy &middot; GBM fair-value $210.94",
+    heroImage: "assets/listing-blueroom.jpg",
+    peerCount: 276,
+    // Real exact-cohort peer prices from active_listings_clean_v6:
+    // cohort key "Brooklyn | Private room | small | short_stay | Small-Multi"
+    peerPrices: [69,71,76,80,86,87,91,92,96,102,102,102,104,105,107,108,108,108,108,112,113,113,113,113,114,115,115,116,118,119,120,120,120,120,121,124,124,125,126,126,126,126,126,127,128,128,130,130,136,136,137,137,137,137,137,138,139,139,139,140,142,142,143,143,143,144,145,145,145,146,147,147,147,147,148,148,149,151,151,152,152,152,153,153,154,154,156,157,158,160,160,160,160,164,165,165,165,167,168,168,168,168,168,169,171,171,171,172,172,172,173,173,174,174,175,175,176,176,177,177,177,177,177,178,179,180,180,180,180,182,182,183,183,183,183,184,185,187,187,187,187,188,188,189,191,191,192,193,194,194,194,195,196,197,197,197,198,199,199,200,201,203,205,205,206,206,206,206,207,208,209,210,212,212,212,212,212,216,217,217,218,218,220,220,223,225,226,227,227,228,228,228,228,229,229,229,233,234,234,235,238,238,238,238,239,240,242,246,247,247,248,249,249,250,251,252,254,254,257,260,262,265,266,268,268,269,269,270,274,277,285,285,286,297,299,299,299,299,304,309,313,314,321,322,326,329,341,342,344,354,356,366,369,369,369,371,371,404,406,413,414,416,419,429,434,442,457,471,489,499,501,610,640,648,788,1033],
+    // Real month-by-month occupancy from past_12mo_calendar.csv
+    realOcc: {Jan:0.5161,Feb:0.5714,Mar:0.4194,Apr:0.7333,May:0.5484,Jun:0.2000,Jul:0.8710,Aug:0.6774,Sep:0.9000,Oct:1.0000,Nov:1.0000,Dec:0.8065},
+    seasonIdx: {Jan:0.8359,Feb:0.824,Mar:0.9325,Apr:0.9962,May:1.0528,Jun:1.0313,Jul:0.9449,Aug:0.926,Sep:1.1543,Oct:1.1149,Nov:1.0663,Dec:1.1208},
+    currentPrice: 321.25, fairEstimate: 211,
+    q10Nightly: 129.41, q90Nightly: 317.04, dirLabel: "Confident: lower price", confScore: 39.2,
+    // 117 reviews < the 142-review panel median. Per-listing table uses the
+    // measured beta = -0.92 (same convention as the other examples); the
+    // review-tier note flags that a sub-panel listing's true beta is likely
+    // steeper, so cutting toward fair value probably GAINS revenue, not just
+    // recovers nights -- the model's conservative $0 placeholder understates it.
+    reviews: 117, beta: -0.92, betaBasis: "measured",
+    flaggedMonths: [],
+    flaggedNote: "Occupancy data is real &mdash; this listing is in the AirROI pilot panel (300 listings with a full 12-month calendar, Jul 2025 &ndash; Jun 2026): reserved and vacant days per month, not an estimate.",
+    unitMultiplier: 1,
+    unitLabel: "Nightly price",
+    inputMin: 50, inputMax: 1100, inputStep: 1, sliderMax: 700,
+    whyNote: "276 comparable peers matched on host tier, room type, size &amp; segment. This is a deliberately lower-confidence example (score 39.2 vs. 73.9 for the Midtown room) — and it shows the model's robustness. The score ranks how narrow a listing's calibrated price band is; private rooms like this one sit in a more dispersed part of the market, so its band is wide ([$129, $317], wider than ~74% of listings). But the direction call is still unambiguous: the $321 price sits above even the q90 upper bound of $317, so the listing is confidently flagged to lower price regardless of the point-estimate uncertainty. Direction confidence and score are independent — a wide band doesn't weaken the call when the price falls outside the entire interval. Real occupancy still runs a healthy 69% annually; the lever is lowering toward fair value ($211) to recover the empty nights.",
+    amenities: ["Wifi", "Kitchen", "Refrigerator", "Air conditioning", "Cooking basics", "Self check-in"],
+    amenityNote: "Five gaps vs. high performers: hangers, bed linens, microwave, a dedicated workspace &amp; shampoo. Small, cheap fixes &mdash; closing them helps fill the nights that repricing alone won't.",
+  },
+  monthly: {
+    name: "Charming Central Park Studio",
+    meta: "Entire rental unit &middot; Upper West Side, Manhattan &middot; 30-night minimum stay",
+    segmentBadge: "Monthly rental",
+    badges: ["Individual host", "114 reviews"],
+    footerListing: "Listing #1533652 &middot; real exact-cohort peer prices (n=251, Manhattan | Entire home/apt | small | monthly | Individual) &amp; real 12-month calendar occupancy &middot; GBM fair-value $181.36",
+    heroImage: "assets/listing-parkstudio.jpg",
+    peerCount: 251,
+    // Real exact-cohort peer prices from active_listings_clean_v6:
+    // cohort key "Manhattan | Entire home/apt | small | monthly | Individual"
+    peerPrices: [18,42,63,71,74,82,83,84,84,86,87,88,91,92,94,101,104,109,109,110,111,111,111,111,112,113,113,114,115,116,117,117,117,120,121,121,121,122,124,124,125,125,126,127,130,130,130,130,130,132,134,135,136,136,136,136,137,137,137,138,138,141,142,145,145,146,146,147,147,148,151,151,152,152,152,152,153,153,153,153,153,154,154,155,155,156,156,157,157,157,158,158,158,159,159,160,160,162,162,163,165,166,167,167,169,170,170,171,171,172,172,173,173,173,174,174,174,174,174,174,174,175,175,176,177,179,181,182,182,183,183,183,183,186,186,188,188,189,190,191,192,193,195,195,196,197,198,199,199,200,200,201,201,201,201,201,201,202,202,203,203,203,204,205,206,206,206,207,208,208,209,209,212,212,213,214,214,214,215,217,219,221,223,224,224,226,227,227,227,229,230,232,235,236,236,236,239,240,240,246,246,253,254,255,259,262,262,263,263,267,270,270,275,277,280,284,286,290,292,293,295,295,298,298,302,303,305,306,308,337,340,344,360,369,375,378,381,384,388,390,417,432,436,444,446,483,515,553,614,740,806],
+    // Real month-by-month occupancy from past_12mo_calendar.csv
+    realOcc: {Jan:0.1613,Feb:0.0,Mar:0.0,Apr:0.8000,May:0.9032,Jun:0.3000,Jul:0.0645,Aug:0.0,Sep:0.0,Oct:0.9677,Nov:0.5000,Dec:0.9032},
+    seasonIdx: {Jan:0.8446,Feb:0.8334,Mar:0.9361,Apr:0.9964,May:1.05,Jun:1.0296,Jul:0.9478,Aug:0.93,Sep:1.1461,Oct:1.1088,Nov:1.0628,Dec:1.1144},
+    currentPrice: 132.37, fairEstimate: 181,
+    q10Nightly: 148.94, q90Nightly: 239.23, dirLabel: "Confident: raise price", confScore: 81.8,
+    // Monthly segment: elasticity could NOT be measured -- the TWFE pilot
+    // returned beta = +0.084, p = 0.734 (not significant, CI spans zero), on
+    // 194 monthly listings. There is no monthly beta, so for the year table we
+    // borrow the short-stay beta = -0.92 as an ILLUSTRATIVE, conservative
+    // stress scenario ("what a monthly estimate would look like with real
+    // data"). betaBasis stays "monthly_ns" so all monthly messaging + the
+    // flat-occupancy (beta=0) upside note still fire. See limitation note.
+    reviews: 114, beta: -0.92, betaBasis: "monthly_ns",
+    flaggedMonths: ["Feb", "Mar", "Aug", "Sep"],
+    flaggedNote: "Occupancy data is real &mdash; this listing is in the AirROI pilot panel (300 listings with a full 12-month calendar, Jul 2025 &ndash; Jun 2026): reserved and vacant days per month, not an estimate. Four months are flagged (Feb, Mar, Aug, Sep) where occupancy reads 0% &mdash; for a monthly rental that's the normal lumpiness of one long-term tenant moving out and the next not yet moved in, gaps between tenancies rather than day-to-day demand. Because we couldn't measure monthly price-elasticity, those months are pinned to real history rather than modeled.",
+    unitMultiplier: 30,
+    unitLabel: "Monthly rent",
+    inputMin: 600, inputMax: 30000, inputStep: 10, sliderMax: 24000,
+    whyNote: "251 comparable peers matched on host tier, room type, size &amp; segment. At the 20th percentile of peer prices &mdash; below even the calibrated q10 of $149 &mdash; the $132 price is a confident underpricing signal (score 81.8), and this listing already has every amenity its high performers have, so there's no operational gap to fix. It's a pure pricing decision. The lever is raising toward fair value ($181).",
+    amenities: ["Wifi", "Kitchen", "Bed linens", "Microwave", "Refrigerator", "Dedicated workspace", "Self check-in"],
+    amenityNote: "No amenity gaps &mdash; this listing already has everything present in 60%+ of its high-performing peers. Nothing to fix operationally; the opportunity here is purely the price.",
+  },
+};
+
+let ACTIVE = null;   // the current listing's config, set by loadListing()
+let JUNE_IDX = null;
+let MAX_REAL_PEER_PRICE = null;
+let HIST_MAX, BIN_W, N_BINS;
+
+function seasonalPrice(price, month) { return price * (ACTIVE.seasonIdx[month] / JUNE_IDX); }
+function expectedOcc(price, month) {
+  if (ACTIVE.flaggedMonths.includes(month)) return ACTIVE.realOcc[month];
+  // Current model: occupancy responds to price through the measured TWFE
+  // elasticity beta, applied multiplicatively exactly as the revenue_lift_roi
+  // worked examples do:  occ_new = occ_old x (price / currentPrice)^beta.
+  // Monthly listings have beta = 0 (elasticity not significant), so their
+  // occupancy is price-neutral and this ratio collapses to 1.
+  const ratio = Math.pow(price / ACTIVE.currentPrice, ACTIVE.beta);
+  return Math.max(0, Math.min(1, ACTIVE.realOcc[month] * ratio));
+}
+function monthRevenue(price, month) {
+  return expectedOcc(price, month) * DAYS_IN_MONTH[month] * seasonalPrice(price, month);
+}
+function percentile(monthlyOrNightlyPrice) {
+  // ACTIVE.peerPrices is always nightly $; convert the display-unit price
+  // back to nightly before comparing.
+  const nightly = monthlyOrNightlyPrice / ACTIVE.unitMultiplier;
+  return (ACTIVE.peerPrices.filter(p => p < nightly).length / ACTIVE.peerPrices.length) * 100;
+}
+
+const svgNS = "http://www.w3.org/2000/svg";
+const histSvg = document.getElementById("hist-svg");
+const VW = 900, VH = 92, PLOT_H = 62;
+const markerLine = document.createElementNS(svgNS, "line");
+markerLine.setAttribute("class", "marker-line");
+markerLine.setAttribute("y1", 0);
+markerLine.setAttribute("y2", PLOT_H);
+
+const markerLabel = document.getElementById("marker-label");
+const priceInput = document.getElementById("price-input");
+const priceSlider = document.getElementById("price-slider");
+const percentileReadout = document.getElementById("percentile-readout");
+const yearTable = document.getElementById("year-table");
+const unitEquiv = document.getElementById("unit-equiv");
+
+function markerX(displayPrice) {
+  const clamped = Math.min(displayPrice, HIST_MAX);
+  return (clamped / HIST_MAX) * (VW * (N_BINS / (N_BINS + 1)));
+}
+
+function buildHistogram() {
+  histSvg.innerHTML = "";
+  HIST_MAX = 600 * ACTIVE.unitMultiplier;
+  BIN_W = 50 * ACTIVE.unitMultiplier;
+  N_BINS = HIST_MAX / BIN_W;
+  const displayPrices = ACTIVE.peerPrices.map(p => p * ACTIVE.unitMultiplier);
+  const bins = new Array(N_BINS + 1).fill(0);
+  displayPrices.forEach(p => {
+    const b = p >= HIST_MAX ? N_BINS : Math.floor(p / BIN_W);
+    bins[b]++;
+  });
+  histSvg.setAttribute("viewBox", `0 0 ${VW} ${VH}`);
+  histSvg.setAttribute("preserveAspectRatio", "none");
+  const barGap = 3;
+  const barW = VW / bins.length - barGap;
+  const maxCount = Math.max(...bins);
+  bins.forEach((count, i) => {
+    const h = (count / maxCount) * PLOT_H;
+    const rect = document.createElementNS(svgNS, "rect");
+    rect.setAttribute("class", "hist-bar");
+    rect.setAttribute("x", i * (barW + barGap));
+    rect.setAttribute("y", PLOT_H - h);
+    rect.setAttribute("width", barW);
+    rect.setAttribute("height", h);
+    histSvg.appendChild(rect);
+  });
+  [0, 200 * ACTIVE.unitMultiplier, 400 * ACTIVE.unitMultiplier].forEach(v => {
+    const x = (v / HIST_MAX) * (VW * (N_BINS / (N_BINS + 1)));
+    const t = document.createElementNS(svgNS, "text");
+    t.setAttribute("class", "hist-axis-label");
+    t.setAttribute("x", x);
+    t.setAttribute("y", VH - 4);
+    t.textContent = "$" + v.toLocaleString();
+    histSvg.appendChild(t);
+  });
+  const overflowCount = bins[N_BINS];
+  const overflowLabel = document.createElementNS(svgNS, "text");
+  overflowLabel.setAttribute("class", "hist-axis-label");
+  overflowLabel.setAttribute("text-anchor", "end");
+  overflowLabel.setAttribute("x", VW - 2);
+  overflowLabel.setAttribute("y", VH - 4);
+  overflowLabel.textContent = `+${overflowCount} above $${HIST_MAX.toLocaleString()}`;
+  histSvg.appendChild(overflowLabel);
+  histSvg.appendChild(markerLine);
+}
+
+function ordinalSuffix(n) {
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 13) return "th";
+  switch (n % 10) {
+    case 1: return "st";
+    case 2: return "nd";
+    case 3: return "rd";
+    default: return "th";
+  }
+}
+
+function render(displayPrice) {
+  const nightly = displayPrice / ACTIVE.unitMultiplier;
+  const pct = percentile(displayPrice);
+  const x = markerX(displayPrice);
+  markerLine.setAttribute("x1", x);
+  markerLine.setAttribute("x2", x);
+  markerLabel.style.left = (x / VW * 100) + "%";
+  markerLabel.textContent = "$" + Math.round(displayPrice).toLocaleString();
+
+  const belowPct = Math.round(pct);
+  const unitNoun = ACTIVE.unitMultiplier === 1 ? "" : "/month";
+  percentileReadout.innerHTML = `Your $${Math.round(displayPrice).toLocaleString()}${unitNoun} is <strong>above ${belowPct}%</strong> of your ${ACTIVE.peerCount} peers.`;
+  unitEquiv.innerHTML = ACTIVE.unitMultiplier === 1 ? "" : `&asymp; <strong>$${nightly.toFixed(0)}</strong> / night equivalent`;
+
+  // Annual-average occupancy: mean of the per-month expectedOcc (same beta
+  // formula from revenue_lift_roi.md), matching the pricing-signal tile so
+  // the two occupancy figures agree.
+  const annualOcc = MONTHS.reduce((sum, m) => sum + expectedOcc(nightly, m), 0) / MONTHS.length;
+  const annualRevenue = MONTHS.reduce((sum, m) => sum + monthRevenue(nightly, m), 0);
+  document.getElementById("m-percentile").textContent = belowPct + ordinalSuffix(belowPct) + " pctile";
+  document.getElementById("m-occ").textContent = Math.round(annualOcc * 100) + "%";
+  document.getElementById("m-annual-revenue").textContent = "$" + annualRevenue.toFixed(0);
+
+  let totalDays = 0, totalRevenue = 0;
+  let rows = "";
+  MONTHS.forEach(m => {
+    const spDisplay = seasonalPrice(nightly, m) * ACTIVE.unitMultiplier;
+    const occ = expectedOcc(nightly, m);
+    const days = occ * DAYS_IN_MONTH[m];
+    const revenue = monthRevenue(nightly, m);
+    totalDays += days;
+    totalRevenue += revenue;
+    const flagged = ACTIVE.flaggedMonths.includes(m);
+    rows += `<tr class="${flagged ? 'flagged' : ''}">
+      <td>${m}${flagged ? ' <span class="flag-note">&#9888;</span>' : ''}</td>
+      <td class="mono">$${spDisplay.toFixed(0)}</td>
+      <td class="mono">${(occ * 100).toFixed(0)}%</td>
+      <td class="mono">${days.toFixed(0)}</td>
+      <td class="mono">$${revenue.toFixed(0)}</td>
+    </tr>`;
+  });
+  yearTable.innerHTML = `
+    <thead><tr><th>Month</th><th>${ACTIVE.unitLabel}</th><th>Expected occupancy</th><th>Occupied days</th><th>Revenue</th></tr></thead>
+    <tbody>${rows}
+      <tr class="total"><td>Total</td><td></td><td></td><td class="mono">${totalDays.toFixed(0)} days</td><td class="mono">$${totalRevenue.toFixed(0)}</td></tr>
+    </tbody>`;
+}
+
+function renderOptimalCallout() {
+  const optimalCallout = document.getElementById("optimal-callout");
+  const unitWord = ACTIVE.unitMultiplier === 1 ? "" : "/month";
+  const currentDisplay = Math.round(ACTIVE.currentPrice * ACTIVE.unitMultiplier);
+  const fairDisplay = Math.round(ACTIVE.fairEstimate * ACTIVE.unitMultiplier);
+
+  // The model's recommendation is the GBM fair value, not a revenue-max
+  // search. At the measured short-stay elasticity (beta = -0.92, revenue
+  // elasticity 1 + beta = 0.08) modeled revenue never peaks below the peer
+  // ceiling, so a "maximize revenue" search is meaningless here -- it just
+  // crawls to the highest peer price, which the model can't vouch for.
+  const curRev = MONTHS.reduce((s, m) => s + monthRevenue(ACTIVE.currentPrice, m), 0);
+  const fairRev = MONTHS.reduce((s, m) => s + monthRevenue(ACTIVE.fairEstimate, m), 0);
+  const curDays = MONTHS.reduce((s, m) => s + expectedOcc(ACTIVE.currentPrice, m) * DAYS_IN_MONTH[m], 0);
+  const fairDays = MONTHS.reduce((s, m) => s + expectedOcc(ACTIVE.fairEstimate, m) * DAYS_IN_MONTH[m], 0);
+  const revDelta = fairRev - curRev;
+  const daysDelta = Math.round(fairDays - curDays);
+  const raising = ACTIVE.fairEstimate >= ACTIVE.currentPrice;
+
+  optimalCallout.classList.remove("uncertain-callout");
+
+  // Uncertain listings: price already sits inside the calibrated range, so no
+  // confident move either way.
+  if (/uncertain/i.test(ACTIVE.dirLabel)) {
+    optimalCallout.classList.add("uncertain-callout");
+    optimalCallout.innerHTML = `
+      <div>
+        <div class="oc-text">Your $${currentDisplay.toLocaleString()}${unitWord} already sits inside the model's calibrated range ($${Math.round(ACTIVE.q10Nightly * ACTIVE.unitMultiplier).toLocaleString()}&ndash;$${Math.round(ACTIVE.q90Nightly * ACTIVE.unitMultiplier).toLocaleString()}). The model has <strong>no confident move</strong> in either direction &mdash; the fair-value estimate ($${fairDisplay.toLocaleString()}) is within a rounding error of what you charge now.</div>
+        <div class="oc-sub">Nudging toward $${fairDisplay.toLocaleString()} is optional, not a flagged opportunity. Treat prices well outside the calibrated range as untested for this listing.</div>
+      </div>`;
+    return;
+  }
+
+  // Confident raise/lower: recommend the fair value, quantify the trade-off.
+  const revWord = revDelta >= 0
+    ? `<strong>+$${Math.abs(revDelta).toFixed(0)}/year</strong>`
+    : `<strong>&minus;$${Math.abs(revDelta).toFixed(0)}/year</strong>`;
+  const nightsPhrase = daysDelta === 0
+    ? `about the same occupied nights`
+    : daysDelta > 0
+      ? `<strong>+${daysDelta} occupied nights/year</strong>`
+      : `${daysDelta} occupied nights/year`;
+  const isMonthly = ACTIVE.betaBasis === "monthly_ns";
+  const framing = isMonthly
+    ? (raising
+        ? `The model flags $${currentDisplay.toLocaleString()}${unitWord} as <strong>below</strong> fair value ($${fairDisplay.toLocaleString()}${unitWord}). This table runs the illustrative &beta; = &minus;0.92 stress scenario, so it shows a conservative ${revWord}.`
+        : `The model flags $${currentDisplay.toLocaleString()}${unitWord} as above fair value ($${fairDisplay.toLocaleString()}${unitWord}), but for a monthly rental a price cut can't be justified on the numbers here.`)
+    : (raising
+        ? `Raising to the model's fair value of <strong>$${fairDisplay.toLocaleString()}${unitWord}</strong> projects ${revWord} (${nightsPhrase}) vs. your current $${currentDisplay.toLocaleString()}${unitWord}.`
+        : `Lowering to the model's fair value of <strong>$${fairDisplay.toLocaleString()}${unitWord}</strong> projects ${revWord} but ${nightsPhrase} vs. your current $${currentDisplay.toLocaleString()}${unitWord}.`);
+  const sub = isMonthly
+    ? (raising
+        ? `We <strong>could not measure price-elasticity</strong> for monthly rentals (&beta; = +0.084, p = 0.734, not significant). With no monthly &beta;, this table borrows the short-stay &minus;0.92 as a <strong>conservative stress test</strong> &mdash; not a monthly measurement. Lean on the model's direction signal for the call.`
+        : `Monthly demand shows no significant price elasticity (&beta; = +0.084, p = 0.734), so cutting price wouldn't reliably fill more nights &mdash; it would just lower revenue with no measured occupancy gain. This listing is excluded from the overpriced repricing case for exactly that reason.`)
+    : (raising
+        ? `Fair value is the GBM q50 &mdash; the calibrated midpoint of what comparable listings charge and get booked at. Pricing above it isn't recommended.`
+        : `The win here is <strong>nights recovered</strong>, not dollars &mdash; at the measured elasticity a price cut is near revenue-neutral. Filling ${daysDelta > 0 ? daysDelta + ' ' : ''}previously-empty nights improves booking volume and search conversion even when revenue barely moves.`);
+
+  // Monthly bounds: the year table runs the illustrative beta=-0.92 stress
+  // scenario (conservative). Here we surface the OTHER bound -- occupancy held
+  // flat (beta=0), which is how the headline portfolio revenue is calculated
+  // -- so both ends of the unmeasured range are visible on screen.
+  let monthlyStress = "";
+  if (isMonthly && raising) {
+    const flatDelta = MONTHS.reduce((sum, m) =>
+      sum + ACTIVE.realOcc[m] * DAYS_IN_MONTH[m] * seasonalPrice(ACTIVE.fairEstimate, m), 0)
+      - MONTHS.reduce((sum, m) => sum + ACTIVE.realOcc[m] * DAYS_IN_MONTH[m] * seasonalPrice(ACTIVE.currentPrice, m), 0);
+    monthlyStress = `<div class="oc-sub oc-panel-note"><strong>The two bounds of an unmeasured elasticity.</strong> ` +
+      `The table above runs the illustrative &beta; = &minus;0.92 (short-stay) as a <strong>conservative stress test</strong> &mdash; ${revWord}. ` +
+      `The <em>optimistic</em> bound holds occupancy flat (&beta; = 0), which is how our headline portfolio revenue is calculated: the same move would then be worth ` +
+      `<span class="hl-gain">+$${Math.max(0, flatDelta).toFixed(0)}/year</span>. We <em>can't</em> say which is right &mdash; monthly elasticity is unmeasured, and &minus;0.92 is borrowed from a different segment, ` +
+      `not a monthly figure. The truth sits between these two, and pinning it down is exactly what the elasticity data ask is for.</div>`;
+  }
+
+  optimalCallout.innerHTML = `
+    <div>
+      <div class="oc-text">${framing}</div>
+      <div class="oc-sub">${sub}</div>
+      ${monthlyStress}
+      <div class="oc-sub oc-panel-note">${buildElasticityNote()}</div>
+    </div>
+    <button class="quick-btn" id="btn-optimal">Try $${fairDisplay.toLocaleString()}</button>`;
+  document.getElementById("btn-optimal").addEventListener("click", () => {
+    priceInput.value = fairDisplay; priceSlider.value = Math.min(+priceSlider.max, fairDisplay); render(fairDisplay);
+  });
+}
+
+function buildElasticityNote() {
+  // Directional revenue read against the elasticity panel's 142-review median.
+  // Monthly segment has no significant elasticity; short-stay uses beta = -0.92
+  // for the table, with the review count telling us which way the TRUE beta
+  // (and therefore the real revenue outcome) leans versus what's shown.
+  const MED = 142;
+  if (ACTIVE.betaBasis === "monthly_ns") {
+    const belowMed = ACTIVE.reviews < MED;
+    return `<strong>We couldn't measure price-elasticity for monthly rentals.</strong> ` +
+      `The pilot's monthly coefficient was not statistically significant (&beta; = +0.084, ` +
+      `p = 0.734, on 194 monthly listings &mdash; the confidence interval spans zero), so we can't ` +
+      `say how occupancy would respond to a price change. The table borrows the short-stay ` +
+      `&beta; = &minus;0.92 as an illustrative stress test &mdash; but note that &minus;0.92 was measured on a ` +
+      `panel whose median listing has <strong>142 reviews</strong>, and this listing sits ` +
+      `<strong>${belowMed ? "below" : "above"}</strong> that median at <strong>${ACTIVE.reviews}</strong>. ` +
+      (belowMed
+        ? `Below-median listings are typically <em>more</em> price-sensitive, so if anything the true monthly response could be steeper still &mdash; the stress test is not necessarily the floor. `
+        : `Above-median listings are typically <em>less</em> price-sensitive, so the true response is likely milder than the stress test shows. `) +
+      `Either way it's borrowed from a different segment, not a monthly measurement: lean on the model's ` +
+      `<strong>direction signal</strong>, and read the range between the &minus;0.92 stress test and the flat (&beta; = 0) bound as the pricing gap. Pinning it down is exactly the elasticity data ask.`;
+  }
+  // Short-stay: beta = -0.92 measured on a panel with a 142-review median.
+  // More reviews -> less price-sensitive (softer/less-negative true beta);
+  // fewer reviews -> more price-sensitive (steeper/more-negative true beta).
+  // Direction is the actual move toward fair value, not the confidence label
+  // (an "Uncertain" listing can still nudge up or down toward fair value).
+  const raising = ACTIVE.fairEstimate >= ACTIVE.currentPrice;
+  const above = ACTIVE.reviews >= MED;
+  const cmp = above
+    ? `This listing's <strong>${ACTIVE.reviews} reviews</strong> sit <strong>above</strong> that median`
+    : `This listing's <strong>${ACTIVE.reviews} reviews</strong> sit <strong>below</strong> that median`;
+  // More reviews -> less price-sensitive (softer/less-negative true beta);
+  // fewer reviews -> more price-sensitive (steeper/more-negative true beta).
+  let lean;
+  if (above && raising) {
+    lean = `so its true price-sensitivity is likely <strong>softer than &minus;0.92</strong> (more loyal, ` +
+      `repeat demand). The occupancy dip shown when you raise toward fair value is therefore a ` +
+      `<strong>conservative overstatement</strong> &mdash; <span class="hl-gain">the real revenue gain is probably larger than the table shows</span>.`;
+  } else if (above && !raising) {
+    lean = `so its true price-sensitivity is likely <strong>softer than &minus;0.92</strong>. Cutting price ` +
+      `recovers fewer extra nights than a typical listing would, so the revenue give-up shown here is ` +
+      `roughly the <strong>worst case</strong> &mdash; the real dollar loss is likely smaller.`;
+  } else if (!above && raising) {
+    lean = `so its true price-sensitivity is likely <strong>steeper than &minus;0.92</strong> (newer, less ` +
+      `established demand). Raising toward fair value could cost <strong>more occupancy</strong> than the ` +
+      `table shows, so treat the modeled revenue gain as an <strong>upper estimate</strong> for this listing.`;
+  } else {
+    lean = `so its true price-sensitivity is likely <strong>steeper than &minus;0.92</strong> (newer, less ` +
+      `established demand, plausibly past the &minus;1.0 breakeven). The model's portfolio math assigns ` +
+      `<span class="hl-note">$0</span> to sub&minus;142&minus;review listings as a deliberately conservative placeholder &mdash; but that ` +
+      `likely <strong>understates</strong> the real gain here: past breakeven, ` +
+      `<span class="hl-gain">cutting toward fair value probably raises revenue, not just recovers nights</span>. ` +
+      `The table's small dip is a conservative floor.`;
+  }
+  return `<strong>vs. the 142-review elasticity panel median:</strong> the short-stay elasticity ` +
+    `(&beta; = &minus;0.92) was measured on a panel whose median listing has 142 reviews. ${cmp}, ${lean}`;
+}
+
+function loadListing(key) {
+  ACTIVE = LISTINGS[key];
+  JUNE_IDX = ACTIVE.seasonIdx.Jun;
+  MAX_REAL_PEER_PRICE = Math.max(...ACTIVE.peerPrices);
+
+  document.getElementById("listing-name").textContent = ACTIVE.name;
+  const heroImg = document.getElementById("hero-img");
+  heroImg.src = ACTIVE.heroImage;
+  heroImg.alt = ACTIVE.name + " — representative interior";
+  document.getElementById("listing-meta").innerHTML = ACTIVE.meta;
+  const badgesHtml = (ACTIVE.segmentBadge ? [`<span class="badge segment">${ACTIVE.segmentBadge}</span>`] : [])
+    .concat(ACTIVE.badges.map(b => `<span class="badge">${b}</span>`)).join("");
+  document.getElementById("listing-badges").innerHTML = badgesHtml;
+  document.getElementById("footer-listing").innerHTML = ACTIVE.footerListing;
+
+  document.getElementById("hist-sub").innerHTML = `Your current price against ${ACTIVE.peerCount} comparable listings, matched on host tier, room type &amp; market segment`;
+  document.getElementById("why-sub").innerHTML = `${ACTIVE.peerCount} comparable listings matched on host tier, room type &amp; market segment (exact-cohort match, no fallback needed)`;
+
+  // ---- Pricing-signal tile: every row is real model output. Price + its
+  // percentile against the real peer prices, the GBM fair value, the
+  // CQR-calibrated q10-q90 range, real annual occupancy (only where a true
+  // 12-month calendar exists), and the GBM direction/confidence. ----
+  const curDisp = Math.round(ACTIVE.currentPrice * ACTIVE.unitMultiplier);
+  const curPct = Math.round(percentile(ACTIVE.currentPrice * ACTIVE.unitMultiplier));
+  document.getElementById("sig-price").innerHTML =
+    `$${curDisp.toLocaleString()} <span style="font-weight:500;color:var(--text-dim);font-size:13px;">(${curPct}${ordinalSuffix(curPct)} pctile of peers)</span>`;
+  document.getElementById("sig-fair").textContent =
+    `$${Math.round(ACTIVE.fairEstimate * ACTIVE.unitMultiplier).toLocaleString()}`;
+  document.getElementById("sig-range").textContent =
+    `$${Math.round(ACTIVE.q10Nightly * ACTIVE.unitMultiplier).toLocaleString()} – $${Math.round(ACTIVE.q90Nightly * ACTIVE.unitMultiplier).toLocaleString()}`;
+
+  // Occupancy: a month-varied realOcc is a genuine 12-month calendar (the
+  // pilot listings); a flat realOcc is the elasticity study's single derived
+  // value (the two revenue-lift examples), which we label as such.
+  const occVals = MONTHS.map(m => ACTIVE.realOcc[m]);
+  const occAnnual = occVals.reduce((a, b) => a + b, 0) / occVals.length;
+  const occVaries = Math.max(...occVals) - Math.min(...occVals) > 0.001;
+  const occLabelEl = document.getElementById("sig-occ-label");
+  const occValEl = document.getElementById("sig-occ");
+  if (occVaries) {
+    occLabelEl.textContent = "Your occupancy (real, 12-mo)";
+    occValEl.textContent = `${Math.round(occAnnual * 100)}% (~${Math.round(occAnnual * 365)} nights/yr)`;
+  } else {
+    occLabelEl.textContent = "Your occupancy (study estimate)";
+    occValEl.innerHTML = `${Math.round(occAnnual * 100)}% <span style="font-weight:500;color:var(--text-dim);font-size:13px;">(no live calendar)</span>`;
+  }
+
+  const confEl = document.getElementById("sig-conf");
+  confEl.textContent = `${ACTIVE.dirLabel} · score ${ACTIVE.confScore}`;
+  confEl.style.color = /lower/i.test(ACTIVE.dirLabel) ? "var(--neutral)"
+    : /raise/i.test(ACTIVE.dirLabel) ? "var(--good)" : "var(--text-dim)";
+  document.getElementById("why-note").textContent = ACTIVE.whyNote;
+
+  document.getElementById("amenity-chips").innerHTML = ACTIVE.amenities.map(a => `<span class="amenity-chip">${a}</span>`).join("");
+  document.getElementById("amenity-note").textContent = ACTIVE.amenityNote;
+
+  const unitNoun = ACTIVE.unitMultiplier === 1 ? "a nightly price" : "a monthly rent";
+  document.getElementById("price-tool-sub").textContent = `Enter ${unitNoun}, see where it lands and what it means for this month and the rest of the year`;
+  document.getElementById("price-input-label").textContent = ACTIVE.unitLabel;
+
+  const currentDisplay = Math.round(ACTIVE.currentPrice * ACTIVE.unitMultiplier);
+  const fairDisplay = Math.round(ACTIVE.fairEstimate * ACTIVE.unitMultiplier);
+  priceInput.min = ACTIVE.inputMin; priceInput.max = ACTIVE.inputMax; priceInput.step = ACTIVE.inputStep;
+  // Slider stops at the highest price any real peer in the cohort actually
+  // charges — beyond this the elasticity slope is extrapolated, so this is
+  // the honest, data-backed ceiling for the slider control.
+  const sliderCap = Math.round(MAX_REAL_PEER_PRICE * ACTIVE.unitMultiplier);
+  priceSlider.min = ACTIVE.inputMin; priceSlider.max = sliderCap; priceSlider.step = ACTIVE.inputStep;
+  document.getElementById("btn-current").textContent = `Use current ($${currentDisplay.toLocaleString()})`;
+  document.getElementById("btn-fair").textContent = `Try fair-value estimate ($${fairDisplay.toLocaleString()})`;
+
+  document.getElementById("flagged-note").innerHTML = ACTIVE.flaggedNote;
+
+  // Year-table subtitle: short-stay listings get the elasticity framing; for
+  // monthly the README is explicit -- we could NOT measure elasticity, so the
+  // table must read as a fair-value comparison, NOT an occupancy projection.
+  document.getElementById("year-sub").innerHTML = ACTIVE.betaBasis === "monthly_ns"
+    ? "We <strong>could not measure price-elasticity</strong> for monthly rentals (&beta; = +0.084, p = 0.734, not significant). With no monthly &beta; to use, this table is run at the <strong>short-stay &beta; = &minus;0.92 as an illustrative stress scenario</strong> &mdash; what a monthly estimate might look like <em>if</em> monthly demand were as price-sensitive as short-stay. Treat it as a <strong>conservative lower bound, not a measurement</strong>: &minus;0.92 is borrowed from a different segment. The optimistic bound holds occupancy flat (&beta; = 0), which is how our headline revenue figure is calculated; the truth sits between the two, and pinning it down is exactly the elasticity data ask."
+    : "Same price, projected through the illustrative seasonal curve month by month, with occupancy adjusted by the measured short-stay elasticity (&beta; = &minus;0.92) as price moves toward fair value. That &minus;0.92 is applied as a consistent baseline across every short-stay listing so the table is comparable &mdash; but it's the pilot value, measured on established (142+ review) hosts. Listings below that review count are likely more elastic (true &beta; nearer &minus;1.3 to &minus;1.5), so the recommendation note refines the real revenue read per listing.";
+
+  // Shared calendar caveat: shown only on listings whose occupancy comes from
+  // the real 12-month calendar (month-varied realOcc = the 5 pilots). The 2
+  // elasticity examples use flat study-derived nights, so it doesn't apply.
+  const caveatEl = document.getElementById("calendar-caveat");
+  const caveatOcc = MONTHS.map(m => ACTIVE.realOcc[m]);
+  const hasRealCalendar = (Math.max(...caveatOcc) - Math.min(...caveatOcc)) > 0.001;
+  if (hasRealCalendar) {
+    caveatEl.style.display = "";
+    caveatEl.innerHTML = "<strong>Why only 300 listings have this:</strong> real month-by-month occupancy comes from the AirROI pilot panel (300 listings). The full active dataset (9,752 listings) has no real occupancy &mdash; its <code>occupancy_rate</code> field is saturated at the 255-day cap, so it can't be used here. And even in the real calendar, the Airbnb platform cannot distinguish host-blocked dates from actual bookings, so months with unusually low occupancy may reflect a blocked calendar rather than weak demand.";
+  } else {
+    caveatEl.style.display = "none";
+  }
+
+  // Gap note: when a listing has flagged 0%-occupancy months (turnover / empty
+  // gaps that price can't fix), point to the KNN amenity layer as the lever to
+  // close them -- repricing alone won't fill a month with a structural gap.
+  const gapEl = document.getElementById("gap-note");
+  const zeroMonths = ACTIVE.flaggedMonths.filter(m => (ACTIVE.realOcc[m] || 0) < 0.001);
+  if (zeroMonths.length > 0) {
+    gapEl.style.display = "";
+    gapEl.innerHTML = `<strong>Closing the empty months:</strong> ${zeroMonths.join(", ")} sit at 0% occupancy &mdash; ` +
+      `for this listing those are gaps price alone won't fix (a price change can't fill a month with no demand or a between-tenant gap). ` +
+      `That's where the <strong>KNN amenity layer</strong> comes in: the peer comparison at right flags the amenities high-performing ` +
+      `neighbors have that this listing doesn't &mdash; closing those is the lever most likely to convert empty months into booked ones, ` +
+      `working alongside the price recommendation rather than through it.`;
+  } else {
+    gapEl.style.display = "none";
+  }
+
+  buildHistogram();
+  renderOptimalCallout();
+
+  priceInput.value = currentDisplay;
+  priceSlider.value = Math.min(sliderCap, currentDisplay);
+  render(currentDisplay);
+}
+
+priceInput.addEventListener("input", () => {
+  const v = Math.max(ACTIVE.inputMin, Math.min(ACTIVE.inputMax, +priceInput.value || 0));
+  priceSlider.value = Math.min(+priceSlider.max, v);
+  render(v);
+});
+priceSlider.addEventListener("input", () => {
+  priceInput.value = priceSlider.value;
+  render(+priceSlider.value);
+});
+document.getElementById("btn-current").addEventListener("click", () => {
+  const v = Math.round(ACTIVE.currentPrice * ACTIVE.unitMultiplier);
+  priceInput.value = v; priceSlider.value = Math.min(+priceSlider.max, v); render(v);
+});
+document.getElementById("btn-fair").addEventListener("click", () => {
+  const v = Math.round(ACTIVE.fairEstimate * ACTIVE.unitMultiplier);
+  priceInput.value = v; priceSlider.value = Math.min(+priceSlider.max, v); render(v);
+});
+document.getElementById("listing-select").addEventListener("change", (e) => loadListing(e.target.value));
+
+loadListing("shortstay");
+</script>
+</body>
+</html>
