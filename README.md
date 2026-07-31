@@ -30,7 +30,7 @@ Positioned commercially as either a **direct-to-consumer SaaS** tool for indepen
 |---|---|---|
 | **Model v1** (`model v1/`) | Log-linear OLS baseline | Superseded |
 | **Model v2** (`model v2/`) | Ridge regression + KNN benchmarking, segment-split (6-model bake-off selected Ridge for coefficient stability) | Superseded |
-| **Model v3** (on branch `v3-confidence-fix-and-seasonality`) | Same Ridge engine as v2, adds confidence scoring + host-tier-aware KNN | Superseded — see note below |
+| **Model v3** (`model v3/`) | Same Ridge engine as v2, adds confidence scoring + host-tier-aware KNN | Superseded — its KNN layer and segment diagnostics carried forward into v4 |
 | **Model v4** (`model v4/`) | **GBM quantile regression (q10/q50/q90) with conformal calibration**, same host-tier-aware KNN layer carried forward, plus seasonality, two live UI tools, a real-price scraper proof of concept, and a price-elasticity pilot | **✅ CURRENT — this is what the deliverable runs on** |
 
 Each version's own README explains why the change was made, not just what changed. Full narrative in [`NYC_Airbnb_Appendix_Technical.docx`](NYC_Airbnb_Appendix_Technical.docx); anticipated Q&A challenges with prepared answers in [`NYC_Airbnb_Anticipated_Questions.docx`](NYC_Airbnb_Anticipated_Questions.docx).
@@ -49,7 +49,9 @@ Each version's own README explains why the change was made, not just what change
 | `final-model-package` | **Merged, retained for history.** Fully contained in `main` (merged 2026-07-28 as `model v4/`). Nothing unique remains on it. |
 | `pending-planning-doc-qa-resolved` | **Merged, retained for history.** Fully contained in `main`. |
 | `jai` | **Stale, superseded.** Last commit 2026-07-17; fully contained in `main`, which is 25 commits ahead. Nothing unique remains on it. Diffing it against `main` shows large apparent deletions — that is simply how far the project has moved since July 17, not work that would be lost. |
-| `v3-confidence-fix-and-seasonality` | **The only branch with unmerged work** — it carries the `model v3/` directory (Manas's v3 package, the confidence-score fix, and the v3 seasonality integration). See the note under Model v3 below. |
+| `v3-confidence-fix-and-seasonality` | **Merged 2026-07-31, retained for history.** Carried the `model v3/` directory; now fully contained in `main`. |
+
+**Every branch is now fully contained in `main`.** Nothing unique remains on any of them, so `main` alone is the complete project.
 
 ### Production artifacts inside `model v4/`
 
@@ -60,7 +62,15 @@ Each version's own README explains why the change was made, not just what change
 | `model v4/ui/` | ✅ Production — the two interactive prototypes shown in the recorded demo |
 | `model v4/ui/_archive/` | ⛔ Deprecated — superseded UI versions, kept for history only |
 | `model v4/scraper/` | Proof of concept — real-price scraper, not part of the production pipeline |
-| `Presentation Planning Notes (DEPRECATED ...).docx` | ⛔ Deprecated — superseded 2026-07-26 |
+
+### Superseded, kept as development history
+
+| Path | Status |
+|---|---|
+| `model v1/`, `model v2/`, `model v3/` | ⛔ Superseded by `model v4/`. Retained so the version progression is reviewable; each carries its own README explaining what it contributed and where that work went. |
+| `model v3/proposed-confidence-fix/` | ⛔ A *proposal* that was never adopted — v4's conformal calibration made the approach obsolete. Kept as a record of the reasoning, not as shipped code. |
+| `model v4/ui/_archive/` | ⛔ Superseded UI versions |
+| `Presentation Planning Notes (DEPRECATED ...).docx` | ⛔ Superseded 2026-07-26 |
 
 ---
 

@@ -1,3 +1,28 @@
+> ## ⛔ SUPERSEDED — historical record only
+>
+> **Model v3 is not what the deliverable runs on.** It is preserved here so the
+> V1 → V2 → V3 → V4 development history is complete and reviewable. The production
+> model is **[`model v4/`](../model%20v4/README.md)** (GBM quantile regression with
+> conformal calibration, plus the host-tier-aware KNN layer carried forward from V3).
+>
+> **What V3 contributed, and where it went:**
+>
+> | V3 element | Outcome |
+> |---|---|
+> | Host-tier-aware KNN comparable logic | **Carried forward into V4** — still in production |
+> | Segment diagnostics by market/host tier/borough | **Carried forward into V4** |
+> | Confidence scoring on pricing signals | **Reworked in V4.** V3's uncertainty proxy was replaced by conformal calibration, which produces a calibrated q10/q50/q90 interval rather than a heuristic 0–100 score. |
+> | Ridge out-of-fold pricing engine | **Replaced in V4** by GBM quantile regression |
+>
+> **On `proposed-confidence-fix/`:** that folder holds a *proposal* for correcting
+> V3's confidence score. It was never adopted, because V4's move to conformal
+> calibration made the underlying approach obsolete. It is kept as a record of the
+> reasoning, not as shipped code. Do not present from it.
+>
+> **On `seasonality-integration/`:** the simulated seasonal price index here is the V3
+> iteration. The current version lives in `model v4/model/seasonality/`. Both are
+> clearly labeled SIMULATED — real calendar-level Airbnb pricing is not public data.
+
 # Airbnb Revenue Optimizer - Model V3
 
 Model V3 is a separate experimental version. It does not overwrite Model V2.
