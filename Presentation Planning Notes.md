@@ -80,6 +80,93 @@ An email from the faculty (7/24) makes clear the actual presentation context is 
 
 ---
 
+## 2A. The Model and the Data — SOURCE OF TRUTH (added 7/31)
+
+**This section is authoritative.** Where the deck, script, demo narration, appendix, or Q&A doc disagree with anything below, they are wrong and should be corrected to match. Every figure here was verified directly against committed repo files on 7/31, not carried over from an earlier write-up.
+
+### Dataset
+
+Inside Airbnb NYC, snapshot **June 14, 2026**. 30,259 raw listings filtered to **9,752 active** (price > 0, availability > 0, at least one review in the trailing 12 months). Working file: `active_listings_clean_v6.csv`. 80 engineered features.
+
+Segment composition: **4,008 short-stay, 5,744 monthly** (monthly = `min_nights` > 28). Monthly is 58.9% of the dataset and averages $162.73/night against $376.82 for short-stay, which is why every model from V2 onward splits them.
+
+### V4 production model — what it actually is
+
+Source: `model v4/model/model_v3_gbm.py`.
+
+- **`HistGradientBoostingRegressor` with `loss='quantile'`**, fit at q10 / q50 / q90. The q50 is the fair-price estimate; q10–q90 is the interval.
+- **Conformal calibration (CQR).** The raw 80% interval only achieved ~64% (short-stay) / ~67% (monthly) empirical coverage. A constant widening term, the 80th percentile of the conformity scores, brings both to **~80.0%** — verified in `v3_gbm_confidence_thresholds.csv`.
+- **Fit separately per segment.** Two independent models, short-stay and monthly. Production never computes a pooled estimate of anything.
+- **Categorical features:** `neighborhood`, `room_type`, `property_type`, `host_tier`, `is_superhost_cat`, `borough`, `capacity_tier`. Note that **neighborhood is included**, which V1 lacked — this matters, see "feature effects" below.
+- **Confidence is directional**, not a score: "Confident: raise price," "Confident: lower price," or "Uncertain (within plausible range)," based on whether actual price falls outside the calibrated interval. The V3 Low/Medium/High score is retained only as an internal QA field.
+- **KNN comparable layer** carried forward from V3: exact-cohort match on host tier, room type, and market segment, falling back to standardized KNN for thin cohorts.
+
+### Verified accuracy (`v3_gbm_segment_metrics.csv`)
+
+| Segment | n | Median APE | MAE | R² (log) | R² (price) |
+|---|---|---|---|---|---|
+| Short-stay | 4,008 | **19.2%** | $102.81 | 0.714 | 0.528 |
+| Monthly | 5,744 | **15.2%** | $39.92 | 0.777 | 0.532 |
+
+These are the only accuracy figures that describe production. The 19.2% / 15.2% used as the model-noise discount in Section 3 are these same numbers.
+
+### ⚠️ Feature effects: V4 produces none
+
+**The V4 GBM yields no coefficients and no feature-importance output.** Its only outputs are `v3_gbm_listing_pricing_signals.csv`, `v3_gbm_segment_metrics.csv`, and `v3_gbm_confidence_thresholds.csv`. There is no importance or SHAP computation anywhere in the pipeline.
+
+Any claim of the form "feature X moves price by Y%" therefore comes from **V1's pooled OLS** (`model v1/manas_ols_coefficients.csv`), which is a superseded model with two defects that inflate amenity and rating effects severely:
+
+- it **pooled** short-stay and monthly, and
+- it controlled for **borough only, not neighborhood**.
+
+Re-estimated with neighborhood controls and a segment split (`model v2/.../q5_segment_coefficient_diff.csv`), the same features collapse:
+
+| Feature | V1 pooled | Segment-split, short-stay | monthly |
+|---|---|---|---|
+| Hair dryer | +30.1% | +1.4% | +5.8% |
+| Cleanliness rating | +28.4% | +5.7% | +4.3% |
+| Location rating | +23.8% | +4.7% | −0.7% |
+| Self check-in | +16.1% | +1.3% | +2.4% |
+| Air conditioning | +9.1% | +1.5% | −1.1% |
+| **Kitchen** | **−8.6%** | **+3.7%** | **+4.1%** (sign flips) |
+
+Structural features hold up (max_guests, bedrooms, bathrooms, room type, borough/neighborhood). It is specifically the **amenity and rating effects** that are artifacts of omitted neighborhood controls and pooling.
+
+**Consequence:** deck slide 5 (EDA, "what drives the nightly price") and appendix slide A4 both present the V1 pooled figures. Those numbers do not describe the production model. **Open decision — needs an owner:** either (a) relabel both as V1 baseline coefficients retained for interpretability, keeping only the structural drivers as headline claims, or (b) compute permutation importance on the actual V4 segment models, which gives genuinely V4-native answers but changes the claim from "% price effect" to importance ranking, since percentage effects only exist for linear models.
+
+### Elasticity pilot (`model v4/elasticity/`)
+
+Independent third-party panel (AirROI), 24 months of per-listing price and occupancy, 258 listings matched. Two-way fixed effects: `ln(occupancy) = listing FE + month FE + β·ln(price)`, HC3 robust SEs, bootstrap CIs resampled by listing.
+
+| Segment | Listings | Obs | β | p | Bootstrap 95% CI |
+|---|---|---|---|---|---|
+| Short-stay | 64 | 884 | **−0.916** | <0.0001 | [−1.30, −0.54] |
+| Monthly | 194 | 1,695 | +0.084 | 0.734 | [−0.40, +0.57] |
+| Full sample | 258 | 2,579 | −0.610 | 0.0002 | [−0.93, −0.29] |
+
+Verified against `outputs_elasticity/elasticity_results.csv`. The short-stay panel skews to established hosts (median 142 reviews, 14 years tenure); **99.3% of underpriced short-stay listings sit below that profile**, which is why β is applied only to the ≥142-review tier and everything below is held at the −1.0 mathematical breakeven.
+
+### Revenue derivation — the exact recipe
+
+Reproduced independently from committed data on 7/31 to **$7.56M against Jai's $7.57M**, a 0.1% match:
+
+1. Residual per listing from `v3_gbm_listing_pricing_signals.csv` (actual − fair).
+2. **Trim the 1st and 99th percentile of `actual_price_usd`.** ⚠️ **The trim is on nightly price, not on the computed revenue lift.** This is not a detail: trimming on lift instead gives **$5.97M**, a $1.6M swing on identical data. State the variable explicitly wherever the methodology appears.
+3. Discount the gap by the segment's own median error (19.2% short-stay, 15.2% monthly), so the target price closes ~81% / ~85% of the gap rather than all of it.
+4. Occupied nights from Inside Airbnb's formula: `estimated_annual_revenue / nightly_price`.
+5. Revenue change per listing = `current_annual_revenue × ((new_price / old_price)^(1+β) − 1)`. Revenue elasticity is **(1+β)**: at β=0 the full price gain flows through; at β=−1.0 it is exactly zero, which is why sub-142-review listings contribute nothing by construction rather than by assumption.
+6. Sum by bucket → underpriced $8.27M, overpriced −$0.70M, **combined $7.57M**, × 15.5% = **$1.17M**.
+
+A ~40-line script reproducing this is available and should be committed to `model v4/elasticity/` so the arithmetic is checkable rather than asserted.
+
+### Verified data facts (use these, not earlier claims)
+
+- **Occupancy by host tier declines with scale:** Individual 44.1%, Small-Multi 37.8%, Mid-Multi 32.6%, Enterprise 30.0%. The earlier 71.5% Small-Multi claim does not reproduce and is retracted.
+- **Occupancy rises with review count** (33.6% → 41.8% by quartile) but is **flat against host tenure** (~37–39% across all quartiles). "Established" only holds up as review count. Do not conflate the two.
+- Mispricing split: 4,931 underpriced (50.6%), 4,821 overpriced (49.4%).
+
+---
+
 ## 3. Revenue Lift
 
 **Data source (real, from this repo — GBM model, current as of 2026-07-26):**
@@ -89,11 +176,11 @@ An email from the faculty (7/24) makes clear the actual presentation context is 
 
 **Working assumption (explicit, presentation-only — per Manas, 7/24):** this dataset identifies pricing *opportunity*, not causal revenue uplift. In reality, Airbnb would validate these recommendations against its own proprietary booking-conversion and price-elasticity data before deployment — data this team's dataset doesn't contain. For presentation purposes, we stand in for that with a simplifying assumption: moving an underpriced listing to fair value is treated as roughly occupancy-neutral, since fair value is itself calibrated to what comparable listings already charge and get booked at.
 
-**Outlier control — 1-99 percentile trim (recommended):** only ~50 listings sit above the 99th percentile, and that's exactly where prediction reliability breaks down (luxury listings, mean actual price ~$927/night vs. model "fair" price ~$1,153/night). Wider trims (2-98, 5-95) cut hundreds more listings for little additional cleanup — risks discarding real signal.
+**Outlier control — 1-99 percentile trim of `actual_price_usd`:** only ~50 listings sit above the 99th percentile, and that's exactly where prediction reliability breaks down (luxury listings, mean actual price ~$927/night vs. model "fair" price ~$1,153/night). Wider trims (2-98, 5-95) cut hundreds more listings for little additional cleanup — risks discarding real signal. **⚠️ The trim is on nightly price, not on the computed revenue lift** — see Section 2A, step 2. Trimming the wrong variable moves the headline by $1.6M.
 
-**Model-noise discount:** applied per segment using the GBM model's own documented median error — short-stay 19.2%, monthly 15.2% (down from 25.1%/20.9% under Ridge, since GBM is better calibrated). Sourced from the model's own accuracy metrics, not invented.
+**Model-noise discount:** applied per segment using the GBM model's own documented median error — short-stay 19.2%, monthly 15.2% (down from 25.1%/20.9% under Ridge, since GBM is better calibrated). Sourced from the model's own accuracy metrics, not invented. Verified against `v3_gbm_segment_metrics.csv` on 7/31.
 
-**Base after 1-99 trim + model-noise discount: $25.6M total addressable host revenue lift** (17.9% of the underpriced subset's current revenue), before any adoption-rate haircut. (Down from $41.4M under Ridge — smaller, more balanced underpriced pool, partly offset by the lighter noise discount.)
+*(An earlier version of this section reported a **$25.6M** "total addressable lift" here, from before the review-tier segmentation. That figure is superseded — the occupancy-neutral ceiling is now $26.8M and the segmented estimate is $8.27M underpriced. See the bands below. Do not cite $25.6M.)*
 
 **Adoption rate:** no external benchmark exists for "% of a measured pricing gap a host base actually captures" — searched revenue-management/dynamic-pricing literature, found nothing that maps cleanly. **Presented as a sensitivity table, not one invented number** — stronger for a rubric that rewards "evidence-backed" claims, and it's the number the Commander's Intent narrative argues the team can move.
 
@@ -149,18 +236,9 @@ Every input here is either measured (−0.916) or a mathematical certainty (−1
 
 **Clarified 7/29 (Jai):** the segmentation math (142-review split, underpriced/overpriced bands, combined headline) was never a second modeling step — it's presentation-layer business arithmetic applied to the already-verified, already-committed elasticity coefficient (`elasticity_model.py` and its outputs are real and in the repo). No script is owed here the way one was for the regression itself. **What's still needed:** the calculation steps (segment counts, per-band figures) should be laid out transparently in Brendan's appendix so a grader can check the arithmetic by hand — normal practice for a business case, distinct from the modeling work. **Owner: Brendan**, as part of appendix assembly.
 
-**Sensitivity table below is now stale — replaced by the segmented ROI table in Section 5:**
+*(A pre-elasticity adoption-sensitivity table was here, built on the $25.6M occupancy-neutral base. Removed 7/31 rather than left marked stale, since every figure in it — including a $3.97M Airbnb cut and sub-1-month paybacks — contradicts the current numbers and would be dangerous if copied by mistake. **The live version is the ROI table in Section 5.**)*
 
-| Adoption | Host revenue lift | Airbnb's cut (15.5%) | Year-1 net (after build) | Payback |
-|---|---|---|---|---|
-| 15% | $3.8M | $603K | $308K | 5.9 months |
-| 25% | $6.4M | $992K | $697K | 3.6 months |
-| 35% | $9.0M | $1.39M | $1.09M | 2.5 months |
-| 50% | $12.8M | $1.98M | $1.69M | 1.8 months |
-| 75% | $19.2M | $2.98M | $2.68M | 1.2 months |
-| 100% | $25.6M | $3.97M | $3.67M | 0.9 months |
-
-**Open items:** team sign-off on the overpriced-reframing above; commit Jai's segmentation math to the repo as a script; fold the combined $7.57M/$1.17M headline into Script v2 (Wed 7/29) and Deck v2 (Thu 7/30).
+**Open items:** commit the segmentation-math reproduction script to `model v4/elasticity/` (Section 2A, step 6); confirm the combined $7.57M/$1.17M headline is reflected in the current script and deck.
 
 ---
 
@@ -300,6 +378,22 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 | 13 | Recommendations, Next Steps & Close | The "so what," what the team would explore further, brief career/company relevance, memorable close — merged | Predictions/recommendations; next steps; relevance to career/company | 1.5 min |
 
 **Planned total: ~21.5 minutes** — leaves roughly 3.5-8.5 minutes of buffer under the 25± actual limit, closer to the real target once delivery inevitably runs long.
+
+> ### ⚠️ Status of this section (7/31): superseded as a slide map, retained as rubric coverage
+>
+> **The built deck is 22 slides** (14 core + 8 appendix), not the 13 planned here. Francois added a dedicated elasticity slide as core slide 10 ("09 · FROM PRICE TO REVENUE," presented by Jai), which was a good call — it gives the measured β its own moment — but it means **every core slide from 10 onward is offset by one against this table.** The appendix slides (A2 run of show, A3 model bake-off, A4 coefficient table, A5 financials, A6 data dictionary, A7 validation, A8 glossary) were never planned here at all.
+>
+> **Do not use this table to locate a slide.** Use the deck. What this section is still good for is the rubric-coverage mapping in the right-hand column — that's the check that every graded component has a home somewhere.
+>
+> **Known defects in the built deck, by actual PowerPoint slide number:**
+>
+> | Slide | Defect | Fix |
+> |---|---|---|
+> | 5 (`04 · KEY VARIABLES`) | Presents V1 pooled OLS coefficients as "what drives the nightly price." Amenity/rating effects inflated 5–20x; these do not describe V4. | See Section 2A, "Feature effects." Keep structural drivers, drop or restate amenity premiums. |
+> | 8 (`07 · MODEL & INSIGHTS`) | Says the overpriced half is "not a second revenue lever," contradicting the combined $7.6M beside it. | Both halves are in the number: underpriced is margin, overpriced is volume. |
+> | 17 (`APPENDIX A3`) | Ridge row mixes V2 error metrics with V1 R² values (shows ≈0.243/≈0.486; actual V2 Ridge is 0.539/0.752). V2 OLS row missing entirely. GBM row blank with a footnote claiming metrics "aren't in the shared CSVs" — they are, in `v3_gbm_segment_metrics.csv`. | Fill from Section 2A's accuracy table; add the V2 rows; delete the footnote. |
+> | 18 (`APPENDIX A4`) | Same V1 pooled coefficient problem as slide 5. Footnote flags only the negative signs as artifacts; the positive magnitudes are equally distorted. | Same as slide 5. |
+> | 19 (`APPENDIX A5`) | Labels the headline "Underpriced host GBV" when $7.6M is the combined figure. | "Combined host GBV: underpriced +$8.27M less overpriced −$0.70M." |
 
 **Deliberately left out of this outline:** who presents which slide. That's for the team to work out on their own — no suggestions here.
 
