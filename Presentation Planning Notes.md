@@ -144,7 +144,7 @@ Independent third-party panel (AirROI), 24 months of per-listing price and occup
 | Monthly | 194 | 1,695 | +0.084 | 0.734 | [−0.40, +0.57] |
 | Full sample | 258 | 2,579 | −0.610 | 0.0002 | [−0.93, −0.29] |
 
-Verified against `outputs_elasticity/elasticity_results.csv`. The short-stay panel skews to established hosts (median 142 reviews, 14 years tenure); **99.3% of underpriced short-stay listings sit below that profile**, which is why β is applied only to the ≥142-review tier and everything below is held at the −1.0 mathematical breakeven.
+Verified against `outputs_elasticity/elasticity_results.csv`. The short-stay panel skews to established hosts (median 142 reviews, 14 years tenure); **76% of underpriced short-stay listings fall below the 142-review threshold** (1,511 of 1,999), and **99% fall short of the panel profile on reviews, tenure, or both** — verified 8/1. The 76% figure is the one that drives the math: β is applied only to the ≥142-review tier, and everything below is held at the −1.0 mathematical breakeven. Do not state the 99% figure as though it referred to review count alone.
 
 ### Revenue derivation — the exact recipe
 
@@ -518,5 +518,5 @@ Daily team meetings Monday-Friday, work starting Saturday. Structure: script and
 - **Deck language cleanup:** Slide 8, Appendix A5 label, and the scripted Q&A answer still say overpriced is excluded, contradicting the combined number they sit beside (Section 3). **Owner: Francois.**
 - **Cost-basis defensibility, worth having an answer ready:** the deck leads with the incremental $65K/$30K, which is Jai's own estimate and *not* externally sourced, while the $190K greenfield figure *does* have Glassdoor benchmarks behind it. Leading with the unsourced number produces the better ROI. That's the likeliest place a sharp grader pushes. The honest answer: Airbnb demonstrably already owns model-serving, pricing, and A/B infrastructure (Smart Pricing ships today), so greenfield overstates the real marginal cost — and the greenfield number is shown alongside precisely so the comparison is visible rather than hidden.
 - **Demo:** recorded 7/30, Jai editing as of 7/31 evening. Needs to land and get embedded.
-- **Brendan: appendix** — was due EOD 7/30. Pull Jai's Option A/B framing, the four-scenario overpriced band, and the "99.3% of underpriced short-stay listings sit below the 142-review panel profile" argument (the strongest defensive point in the project, and the reason the old $9.6M was never a real floor).
+- **Brendan: appendix** — was due EOD 7/30. Pull Jai's Option A/B framing, the four-scenario overpriced band, and the "76% of underpriced short-stay listings sit below the 142-review threshold" argument (the strongest defensive point in the project, and the reason the old $9.6M was never a real floor).
 - **Repo access:** Manas and Rachael still unverified as collaborators. **Owner: Jai.**
