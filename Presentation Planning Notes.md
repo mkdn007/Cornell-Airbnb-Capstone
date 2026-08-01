@@ -157,7 +157,30 @@ Reproduced independently from committed data on 7/31 to **$7.56M against Jai's $
 5. Revenue change per listing = `current_annual_revenue × ((new_price / old_price)^(1+β) − 1)`. Revenue elasticity is **(1+β)**: at β=0 the full price gain flows through; at β=−1.0 it is exactly zero, which is why sub-142-review listings contribute nothing by construction rather than by assumption.
 6. Sum by bucket → underpriced $8.27M, overpriced −$0.70M, **combined $7.57M**, × 15.5% = **$1.17M**.
 
-A ~40-line script reproducing this is available and should be committed to `model v4/elasticity/` so the arithmetic is checkable rather than asserted.
+`model v4/elasticity/reproduce_revenue_lift.py` regenerates all of this from committed data — $7.56M host GBV, $1.17M fee, 77,499 nights against the $7.57M / $1.17M / 77,606 reported. Run it rather than taking the arithmetic on faith.
+
+> **Note on recovered nights:** nights span **both** review tiers while revenue does not. The sub-142 tier is held at β = −1.0, which nets exactly zero revenue but still recovers real nights, since at unit elasticity a price cut raises occupancy proportionally. Counting nights only where revenue is non-zero undercounts them roughly threefold (20,934 vs 77,499).
+
+### ⚠️ Revenue composition by model confidence — the most findable gap in the deck
+
+**69% of the $7.56M comes from listings the model classifies as "Uncertain (within plausible range)."** Verified 8/1.
+
+| Model's directional call | Listings | Revenue | Share |
+|---|---|---|---|
+| Confident: raise price | 449 | +$2.79M | 37% |
+| Confident: lower price | 94 | −$0.45M | −6% |
+| **Uncertain (within plausible range)** | **3,192** | **+$5.21M** | **69%** |
+| | | **+$7.56M** | |
+
+Anyone with the repo can compute this in about a minute, and neither the deck nor the script mentions it anywhere. **Volunteer it rather than get caught by it.**
+
+**Why it is defensible.** "Uncertain" is `direction_confidence`, and it means the host's current price falls *inside* the calibrated q10–q90 interval — not that there is no signal. The revenue math uses **q50**, the model's central estimate, which remains the best point estimate for that listing regardless of how wide the band around it is. The 19.2% / 15.2% model-noise discount already haircuts the gap for exactly this reason. Note this is distinct from `confidence_score`, which measures band width; a listing can have a low score and still get a confident directional call if its price sits outside the whole band (see the Blue Room walkthrough in `model v4/ui/UI_Script.md`).
+
+**Why it is still a real gap.** The product shows the host "Uncertain (within plausible range)." A host reading that has no particular reason to act. So there is a genuine distance between what the tool would recommend today and what the headline counts as opportunity — and it is a *separate* filter from adoption, not the same one wearing a different hat.
+
+**The answer to give: $2.34M as a second floor.** That is the confident-call subset. At 15.5% it is **$363K/yr** in Airbnb fees at full adoption, against a $65K build and $30K/yr run — still net-positive in Year 1 even at 35% adoption. **The funding conclusion does not depend on winning this argument**, which is the point worth making out loud.
+
+> Suggested phrasing: *"The model makes a confident directional call on about one listing in five, and that subset alone is worth $2.34M. The full measured gap, including listings where the current price is plausible but off-center, is $7.56M. Both numbers are in the appendix, and the project funds itself on either one."*
 
 ### Verified data facts (use these, not earlier claims)
 
