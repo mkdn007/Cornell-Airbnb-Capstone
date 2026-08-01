@@ -95,6 +95,8 @@ Each version's own README explains why the change was made, not just what change
 | [Team Status Dashboard](https://claude.ai/code/artifact/b3c6574e-a7fc-44fb-a11b-e05adbea1433) | Live status board: what's locked, what's building now, and open risks ahead of Friday's v3 FINAL |
 | [GitHub Projects Board](https://github.com/users/mkdn007/projects/1) | Day-to-day task tracker |
 
+https://drive.google.com/file/d/1OlrAfI1-gpK6cfne5SQt2Q0EjrdruFje/view?usp=drive_link - DEMO video link
+
 ---
 
 ## Team
