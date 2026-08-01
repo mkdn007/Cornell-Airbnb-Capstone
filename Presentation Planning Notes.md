@@ -402,21 +402,26 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 
 **Planned total: ~21.5 minutes** — leaves roughly 3.5-8.5 minutes of buffer under the 25± actual limit, closer to the real target once delivery inevitably runs long.
 
-> ### ⚠️ Status of this section (7/31): superseded as a slide map, retained as rubric coverage
+> ### ⚠️ Status of this section (updated 8/1): superseded as a slide map, retained as rubric coverage
 >
-> **The built deck is 22 slides** (14 core + 8 appendix), not the 13 planned here. Francois added a dedicated elasticity slide as core slide 10 ("09 · FROM PRICE TO REVENUE," presented by Jai), which was a good call — it gives the measured β its own moment — but it means **every core slide from 10 onward is offset by one against this table.** The appendix slides (A2 run of show, A3 model bake-off, A4 coefficient table, A5 financials, A6 data dictionary, A7 validation, A8 glossary) were never planned here at all.
+> **The built deck is 20 slides** — 14 core, one BACKUP divider, then five backup slides (B1–B5) — not the 13 planned here. Francois added a dedicated elasticity slide as core slide 10 ("09 · FROM PRICE TO REVENUE," presented by Jai), which was a good call — it gives the measured β its own moment — but it means **every core slide from 10 onward is offset by one against this table.**
+>
+> **Terminology, decided 7/31:** the non-presented slides are **"backup" slides (B1–B5)**, never "appendix" slides. "Appendix" refers only to the two documents (`NYC_Airbnb_Appendix_Technical.docx`, `NYC_Airbnb_Anticipated_Questions.docx`). The old A2–A8 numbering is gone; the deck previously started its backups at A2 with no A1 at all.
 >
 > **Do not use this table to locate a slide.** Use the deck. What this section is still good for is the rubric-coverage mapping in the right-hand column — that's the check that every graded component has a home somewhere.
 >
-> **Known defects in the built deck, by actual PowerPoint slide number:**
+> **Defects found in the built deck — all resolved as of 8/1:**
 >
-> | Slide | Defect | Fix |
+> | Slide | Defect | Resolution |
 > |---|---|---|
-> | 5 (`04 · KEY VARIABLES`) | Presents V1 pooled OLS coefficients as "what drives the nightly price." Amenity/rating effects inflated 5–20x; these do not describe V4. | See Section 2A, "Feature effects." Keep structural drivers, drop or restate amenity premiums. |
-> | 8 (`07 · MODEL & INSIGHTS`) | Says the overpriced half is "not a second revenue lever," contradicting the combined $7.6M beside it. | Both halves are in the number: underpriced is margin, overpriced is volume. |
-> | 17 (`APPENDIX A3`) | Ridge row mixes V2 error metrics with V1 R² values (shows ≈0.243/≈0.486; actual V2 Ridge is 0.539/0.752). V2 OLS row missing entirely. GBM row blank with a footnote claiming metrics "aren't in the shared CSVs" — they are, in `v3_gbm_segment_metrics.csv`. | Fill from Section 2A's accuracy table; add the V2 rows; delete the footnote. |
-> | 18 (`APPENDIX A4`) | Same V1 pooled coefficient problem as slide 5. Footnote flags only the negative signs as artifacts; the positive magnitudes are equally distorted. | Same as slide 5. |
-> | 19 (`APPENDIX A5`) | Labels the headline "Underpriced host GBV" when $7.6M is the combined figure. | "Combined host GBV: underpriced +$8.27M less overpriced −$0.70M." |
+> | 2 (`01 · EXECUTIVE SUMMARY`) | Contained **zero numbers** — problem/answer blocks plus a Predict/Explain/Act triptych that duplicated slide 7. The rubric asks for the headline figures in the executive summary. | ✅ Rebuilt 8/1. Headline is now "$1.17M a year, for a $65K build"; the triptych is replaced with three stat blocks ($1.17M / ~3 months / $65K). Script narration rewritten to match. |
+> | 5 (`04 · KEY VARIABLES`) | Presented V1 pooled OLS coefficients as "what drives the nightly price." Amenity/rating effects inflated 5–20x; these do not describe V4. | ✅ Rebuilt 7/31 as the two-market comparison (4,008 short-stay @ $284 median vs. 5,744 monthly @ $131). No V1 coefficients remain in the deck. |
+> | 8 (`07 · MODEL & INSIGHTS`) | Said the overpriced half is "not a second revenue lever," contradicting the combined $7.6M beside it. | ✅ Rewritten 7/31: both halves are in the number — underpriced is margin, overpriced is volume. |
+> | 13 (`12 · WHAT WE'D DO WITH MORE`) | Read as an apology for the model's limits rather than a data ask. | ✅ Retitled and rewritten 7/31 — "The number is a floor. Here is what lifts it." |
+> | B1 (bake-off, was A3) | Ridge row mixed V2 error metrics with V1 R² values (showed ≈0.243/≈0.486; actual V2 Ridge is 0.539/0.752). V2 OLS row missing. GBM row blank with a footnote claiming metrics "aren't in the shared CSVs" — they are, in `v3_gbm_segment_metrics.csv`. | ✅ Table rebuilt 6→8 rows from Section 2A's accuracy table; footnote deleted. |
+> | B2 (financials, was A5) | Labelled the headline "Underpriced host GBV" when $7.6M is the combined figure. | ✅ Corrected to the combined framing (+$8.27M underpriced less −$0.70M overpriced), and the "no overpriced revenue" line reworded to "No overpriced upside — we book its loss, not its potential gain." |
+> | B3, B4 | Did not exist. The two hardest live questions — the 142-review split and the Uncertain share — had no visual answer. | ✅ Created 7/31. B3 is the 142-review split; B4 is revenue by model confidence ($2.34M → $363K/yr confident subset). |
+> | Old A4 (coefficient table) | Same V1 pooled coefficient problem as slide 5. | ✅ Removed — the V1 coefficient table is no longer in the deck at all. |
 
 **Deliberately left out of this outline:** who presents which slide. That's for the team to work out on their own — no suggestions here.
 
@@ -439,7 +444,7 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 
 **✅ Script v1 exists and was reviewed (Mon 7/27 meeting).** Structure maps cleanly onto the 13-slide sequence above and fits comfortably inside the real ~25min budget. Fixes identified for v2, notes sent to Manas:
 - Slide 1 needs team members + Stan named explicitly — rubric requires this, current draft just says "We're Team 3."
-- Exec Summary (Slide 2) needs to at least reference the headline payback/ROI numbers verbally — currently doesn't mention them at all, and that's a required rubric item.
+- ✅ **Resolved 8/1.** Exec Summary (Slide 2) referenced no headline numbers at all — a required rubric item. Both the slide and its narration now lead with $7.6M host GBV → $1.17M/yr in Airbnb fees, $65K build / $30K run, ~3-month payback at 35% adoption.
 - Commander's Intent is currently misattributed to "our industry coach" in the script — it's Brendan's framing (Section 2 above), needs correcting.
 - The elasticity mechanism (Section 3) is currently hand-waved as "additional occupancy data" — given the real ~25min budget, there's room to actually name the method and finding instead of staying vague.
 - No line yet addresses what the overpriced half of listings is worth (see Section 3's resolution above — fairness signal, not revenue lever).
