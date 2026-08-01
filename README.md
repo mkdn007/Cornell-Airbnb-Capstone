@@ -70,6 +70,7 @@ Each version's own README explains why the change was made, not just what change
 | `model v1/`, `model v2/`, `model v3/` | ⛔ Superseded by `model v4/`. Retained so the version progression is reviewable; each carries its own README explaining what it contributed and where that work went. |
 | `model v3/proposed-confidence-fix/` | ⛔ A *proposal* that was never adopted — v4's conformal calibration made the approach obsolete. Kept as a record of the reasoning, not as shipped code. |
 | `model v4/ui/_archive/` | ⛔ Superseded UI versions |
+| `_project-history/` | ⛔ Early-stage planning documents, kept for provenance. **Contains figures later retracted** — notably the 71.5%/47.3% host-tier occupancy claim corrected in the erratum above. Read as a record of how the project started, not as current findings. |
 | `Presentation Planning Notes (DEPRECATED ...).docx` | ⛔ Superseded 2026-07-26 |
 
 ---
@@ -86,6 +87,7 @@ Each version's own README explains why the change was made, not just what change
 | [Price Elasticity Model](model%20v4/elasticity/README_elasticity_model.md) | The TWFE elasticity pilot: data source, method, results, and what it does and doesn't establish |
 | [Elasticity → Revenue](model%20v4/elasticity/ELASTICITY_TO_REVENUE.md) | How the measured elasticity becomes a defensible revenue number: review-tier segmentation, the underpriced and overpriced bands, and the combined floor |
 | [Revenue → ROI](model%20v4/elasticity/REVENUE_TO_ROI.md) | **Current cost and ROI figures** — incremental cost basis, adoption sensitivity, NPV, and the five-year timeline |
+| [`reproduce_revenue_lift.py`](model%20v4/elasticity/reproduce_revenue_lift.py) | Regenerates the headline figures from committed data — run it to check the arithmetic rather than take it on faith. Reproduces $7.56M host GBV, $1.17M Airbnb fee, and 77,499 nights against the $7.57M / $1.17M / 77,606 reported |
 | [Revenue Lift & ROI — master working doc](model%20v4/elasticity/REVENUE_LIFT_ROI_MASTER.md) | Jai's full financial reasoning, including the Option A vs. Option B decision. Sections 1–5b and 7–8 are current; **Section 6's cost/ROI table is superseded** by Revenue → ROI above (see the header note in the file) |
 | [NYC_Airbnb_Appendix_Technical.docx](NYC_Airbnb_Appendix_Technical.docx) | Full technical narrative: V1→V2→V3→V4, EDA, price elasticity, business recommendations, and carried-forward limitations. Backup for Q&A, not part of the timed presentation. |
 | [NYC_Airbnb_Anticipated_Questions.docx](NYC_Airbnb_Anticipated_Questions.docx) | Prepared answers to the sharpest likely challenges — companion to the appendix above |
