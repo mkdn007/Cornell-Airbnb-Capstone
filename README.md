@@ -80,6 +80,7 @@ Each version's own README explains why the change was made, not just what change
 | Document | What it covers |
 |----------|----------------|
 | **[Airbnb Pricing Deck.pptx](Airbnb%20Pricing%20Deck.pptx)** | **The final presentation.** 14 core slides plus a BACKUP divider and six backup slides (B1–B6) held for Q&A. This is the deliverable submitted to Canvas. |
+| **[Recorded product demo](https://drive.google.com/file/d/1OlrAfI1-gpK6cfne5SQt2Q0EjrdruFje/view)** | **Narrated walkthrough of the live pricing tool, played during slide 9 of the presentation.** Pre-recorded per faculty guidance rather than demoed live. Hosted on Google Drive (266 MB, too large for the repo); link is open to anyone, no sign-in needed. Narration script: [`UI_Script.md`](model%20v4/ui/UI_Script.md) |
 | **[Airbnb Pricing Script.docx](Airbnb%20Pricing%20Script.docx)** | Spoken script for the deck, slide by slide, with speaker assignments, handoff lines and a Q&A crib sheet |
 | [Data Cleaning Process](Data%20Cleaning%20Process.md) | Full cleaning + feature-engineering pipeline: active-listing filter, imputation, amenity parsing, host tiers, calendar occupancy, BERT sentiment, and the complete column dictionary |
 | [Model v1 — Baseline OLS](model%20v1/README_MANAS_MODELING.md) | The original log-linear OLS pricing model: target, features, holdout results (OLS vs Random Forest), and the residual definition |
@@ -98,8 +99,6 @@ Each version's own README explains why the change was made, not just what change
 | `Capstone Project Visualizations.twb` | Tableau workbook with the EDA and results visualizations |
 | [Team Status Dashboard](https://claude.ai/code/artifact/b3c6574e-a7fc-44fb-a11b-e05adbea1433) | Live status board: what's locked, what's building now, and open risks ahead of Friday's v3 FINAL |
 | [GitHub Projects Board](https://github.com/users/mkdn007/projects/1) | Day-to-day task tracker |
-
-https://drive.google.com/file/d/1OlrAfI1-gpK6cfne5SQt2Q0EjrdruFje/view?usp=drive_link - DEMO video link
 
 ---
 
