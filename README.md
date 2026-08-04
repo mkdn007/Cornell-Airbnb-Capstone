@@ -81,7 +81,6 @@ Each version's own README explains why the change was made, not just what change
 |----------|----------------|
 | **[Airbnb Pricing Deck.pptx](Airbnb%20Pricing%20Deck.pptx)** | **The final presentation.** 14 core slides plus a BACKUP divider and six backup slides (B1–B6) held for Q&A. This is the deliverable submitted to Canvas. |
 | **[Airbnb Pricing Script.docx](Airbnb%20Pricing%20Script.docx)** | Spoken script for the deck, slide by slide, with speaker assignments, handoff lines and a Q&A crib sheet |
-| [Rehearsal Card](Rehearsal%20Card%20-%20Who%20Presents%20What.docx) | One-page rehearsal reference: who presents which slides, timing, and which backup slide answers which question |
 | [Data Cleaning Process](Data%20Cleaning%20Process.md) | Full cleaning + feature-engineering pipeline: active-listing filter, imputation, amenity parsing, host tiers, calendar occupancy, BERT sentiment, and the complete column dictionary |
 | [Model v1 — Baseline OLS](model%20v1/README_MANAS_MODELING.md) | The original log-linear OLS pricing model: target, features, holdout results (OLS vs Random Forest), and the residual definition |
 | [Model v2 — Model Iterations](model%20v2/model-iterations/README.md) | How the model evolved from OLS → Ridge → KNN → segment split, with links to the testing, pricing, and benchmarking sub-docs |
