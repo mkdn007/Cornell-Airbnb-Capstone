@@ -329,7 +329,7 @@ Using NPV/IRR/Payback methodology, flat steady-state adoption (Section 6 has the
 | 75% | $878K | $4.39M | $4.17M | $3.15M | 1,941% | ~1 mo |
 | 100% | $1.17M | $5.85M | $5.63M | $4.26M | 2,621% | ~1 mo |
 
-**Recommendation: lead with the 25% and 35% rows** as the conservative and expected cases. On the incremental cost basis, even 15% adoption pays back in ~6 months and clears 300% ROI. Don't headline the 100% row — it invites the obvious adoption-skepticism pushback.
+**⚠️ SUPERSEDED AS THE HEADLINE (8/4). This table is now a sensitivity, not the pitch.** Every row here holds one adoption rate flat for five years, which no product does. **The deck runs on the ramped model in Section 6** — roughly 10% uptake in Year 1 climbing to ~42% by Year 4, cash-positive in Year 1, $1.61M nominal / $1.14M NPV cumulative over five years. Slides 2, 11, 12 and Backups B2 and B6 all use that curve. Keep this table for the "what if adoption settled at X?" question, which is a real stress test and a different question. Don't headline the 100% row — it invites the obvious adoption-skepticism pushback.
 
 **For context — the occupancy-neutral ceiling ($4.15M @ 100%) produces multiples of these figures.** Show it as upside context if asked, not the headline.
 
@@ -368,7 +368,7 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 
 **Payback: net-positive in Year 1, both nominal and NPV.** On the incremental cost basis, even 10% first-year adoption ($117K revenue) covers the $95K Year-1 cost — no multi-year hole to climb out of, unlike the old $190K-standalone-cost version.
 
-**The NPV haircut is real but doesn't threaten the story:** 5-yr net revenue $5.63M nominal → $4.26M at 10% NPV (~24% haircut). Still net-positive Year 1, still returns many multiples of cost over five years.
+**The NPV haircut is real but doesn't threaten the story.** On the ramped model the deck presents, 5-yr cumulative net is **$1.61M nominal → $1.14M at 10% NPV (~29% haircut)**, still cash-positive in Year 1. The larger $5.63M → $4.26M (~24%) pair is the flat 100%-adoption row from Section 5's sensitivity table, not a forecast — don't quote it as the five-year number, which is the mistake the appendix and Q&A doc both made until 8/4.
 
 **Caveat for the slide:** no verified case study of an Airbnb-specific or directly comparable host/seller-tool adoption curve exists — this is a recalibration of general SaaS/diffusion benchmarks, not a directly analogous real-world number.
 
@@ -404,9 +404,9 @@ Real, cited adoption-ramp framework — **Rogers' Diffusion of Innovation** (bes
 
 > ### ⚠️ Status of this section (updated 8/1): superseded as a slide map, retained as rubric coverage
 >
-> **The built deck is 20 slides** — 14 core, one BACKUP divider, then five backup slides (B1–B5) — not the 13 planned here. Francois added a dedicated elasticity slide as core slide 10 ("09 · FROM PRICE TO REVENUE," presented by Jai), which was a good call — it gives the measured β its own moment — but it means **every core slide from 10 onward is offset by one against this table.**
+> **The built deck is 21 slides** — 14 core, one BACKUP divider, then six backup slides (B1–B6) — not the 13 planned here. B6 (the adoption ramp) was added 8/4 alongside the ramped ROI model. Francois added a dedicated elasticity slide as core slide 10 ("09 · FROM PRICE TO REVENUE," presented by Jai), which was a good call — it gives the measured β its own moment — but it means **every core slide from 10 onward is offset by one against this table.**
 >
-> **Terminology, decided 7/31:** the non-presented slides are **"backup" slides (B1–B5)**, never "appendix" slides. "Appendix" refers only to the two documents (`NYC_Airbnb_Appendix_Technical.docx`, `NYC_Airbnb_Anticipated_Questions.docx`). The old A2–A8 numbering is gone; the deck previously started its backups at A2 with no A1 at all.
+> **Terminology, decided 7/31:** the non-presented slides are **"backup" slides (B1–B6)**, never "appendix" slides. "Appendix" refers only to the two documents (`NYC_Airbnb_Appendix_Technical.docx`, `NYC_Airbnb_Anticipated_Questions.docx`). The old A2–A8 numbering is gone; the deck previously started its backups at A2 with no A1 at all.
 >
 > **Do not use this table to locate a slide.** Use the deck. What this section is still good for is the rubric-coverage mapping in the right-hand column — that's the check that every graded component has a home somewhere.
 >

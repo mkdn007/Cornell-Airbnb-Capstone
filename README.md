@@ -79,6 +79,9 @@ Each version's own README explains why the change was made, not just what change
 
 | Document | What it covers |
 |----------|----------------|
+| **[Airbnb Pricing Deck.pptx](Airbnb%20Pricing%20Deck.pptx)** | **The final presentation.** 14 core slides plus a BACKUP divider and six backup slides (B1–B6) held for Q&A. This is the deliverable submitted to Canvas. |
+| **[Airbnb Pricing Script.docx](Airbnb%20Pricing%20Script.docx)** | Spoken script for the deck, slide by slide, with speaker assignments, handoff lines and a Q&A crib sheet |
+| [Rehearsal Card](Rehearsal%20Card%20-%20Who%20Presents%20What.docx) | One-page rehearsal reference: who presents which slides, timing, and which backup slide answers which question |
 | [Data Cleaning Process](Data%20Cleaning%20Process.md) | Full cleaning + feature-engineering pipeline: active-listing filter, imputation, amenity parsing, host tiers, calendar occupancy, BERT sentiment, and the complete column dictionary |
 | [Model v1 — Baseline OLS](model%20v1/README_MANAS_MODELING.md) | The original log-linear OLS pricing model: target, features, holdout results (OLS vs Random Forest), and the residual definition |
 | [Model v2 — Model Iterations](model%20v2/model-iterations/README.md) | How the model evolved from OLS → Ridge → KNN → segment split, with links to the testing, pricing, and benchmarking sub-docs |
@@ -92,7 +95,7 @@ Each version's own README explains why the change was made, not just what change
 | [NYC_Airbnb_Appendix_Technical.docx](NYC_Airbnb_Appendix_Technical.docx) | Full technical narrative: V1→V2→V3→V4, EDA, price elasticity, business recommendations, and carried-forward limitations. Backup for Q&A, not part of the timed presentation. |
 | [NYC_Airbnb_Anticipated_Questions.docx](NYC_Airbnb_Anticipated_Questions.docx) | Prepared answers to the sharpest likely challenges — companion to the appendix above |
 | [Presentation Planning Notes](Presentation%20Planning%20Notes.md) | Ground-truth source for the final presentation: problem/solution framing, revenue-lift methodology, cost/ROI, slide sequence, team assignments, and schedule |
-| [Capstone Presentation](Model%20Definition%20%26%20Initial%20Results%20%28FINAL%29.pdf) | Original slide deck (PDF) covering the business case, EDA findings, and modeling approach — also viewable [online](https://1drv.ms/p/c/f8ae865111d402f7/IQDEBYREy05pSo0NkkGYIBVBAcsa5nQCOXdlw9JKNpdyrlA?e=UWj3oa) |
+| [Model Definition & Initial Results (PDF)](Model%20Definition%20%26%20Initial%20Results%20%28FINAL%29.pdf) | ⛔ **Superseded — this is the mid-project interim deck, not the final presentation.** Kept for history; the current deck is `Airbnb Pricing Deck.pptx` above. Covers the business case, EDA findings, and modeling approach as they stood mid-project — also viewable [online](https://1drv.ms/p/c/f8ae865111d402f7/IQDEBYREy05pSo0NkkGYIBVBAcsa5nQCOXdlw9JKNpdyrlA?e=UWj3oa) |
 | `Capstone Project Visualizations.twb` | Tableau workbook with the EDA and results visualizations |
 | [Team Status Dashboard](https://claude.ai/code/artifact/b3c6574e-a7fc-44fb-a11b-e05adbea1433) | Live status board: what's locked, what's building now, and open risks ahead of Friday's v3 FINAL |
 | [GitHub Projects Board](https://github.com/users/mkdn007/projects/1) | Day-to-day task tracker |
